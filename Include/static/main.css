@@ -10,9 +10,6 @@ body{
     margin-right : 10px;
 }
 
-#navbar-space{
-}
-
 .nav-item{
     font-size: 20px;
     padding: 10 10 10 10;
@@ -22,6 +19,7 @@ a.nav-link:hover{
     color:white;
 }
 
+
 a.dropdown-item:hover{
     color: white;
 }
@@ -29,3 +27,6 @@ a.dropdown-item:hover{
 a.logout:hover{
     color: red;
 }
+
+
+

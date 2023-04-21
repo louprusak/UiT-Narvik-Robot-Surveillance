@@ -1,0 +1,32 @@
+body{
+    margin-top : 85px;
+}
+
+div.login{
+    margin-top:300px;
+    padding: 50px;
+    background-color: white;
+    width:30%;
+
+    border-radius: 10px;
+}
+
+.background-image{
+    background-image: url('../static/uit3.png');
+    background-position: center;
+    height: 50vh;
+    background-repeat: no-repeat;
+}
+
+.page-logo{
+    margin-right : 10px;
+}
+
+h1{
+    text-align: center;
+}
+
+.login-btn{
+    text-align: center;
+}
+
