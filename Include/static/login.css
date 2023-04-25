@@ -1,12 +1,22 @@
 body{
-    margin-top : 85px;
+    margin-top : 200px;
+}
+
+.grandParentContainer{
+    display: table;
+    height:100%;
+    margin: 0 auto;
+}
+
+.parentContainer{
+    display: table-cell;
+    vertical-align:middle;
 }
 
 div.login{
-    margin-top:300px;
     padding: 50px;
     background-color: white;
-    width:30%;
+    width:500px;
 
     border-radius: 10px;
 }

@@ -10,9 +10,13 @@ body{
     margin-right : 10px;
 }
 
+.container-tabs{
+    margin: auto;
+}
+
 .nav-item{
     font-size: 20px;
-    padding: 10 10 10 10;
+
 }
 
 a.nav-link:hover{
