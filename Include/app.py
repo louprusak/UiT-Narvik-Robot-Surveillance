@@ -12,17 +12,17 @@ def login():
 @app.route("/home")
 def home():
     if loggedIn:
-        return render_template("home.html", title="Home", loggedIn=loggedIn)
+        return render_template("home.html", title="Home", loggedIn=loggedIn, activetab='home')
 
 @app.route("/cams")
 def cams():
     if loggedIn:
-        return render_template("cams.html", title="Cams", loggedIn=loggedIn)
+        return render_template("cams.html", title="Cams", loggedIn=loggedIn, activetab='cams')
 
 @app.route("/all")
 def all():
     if loggedIn:
-        return render_template("all.html", title="All Cams", loggedIn=loggedIn)
+        return render_template("all.html", title="All Cams", loggedIn=loggedIn, activetab='all')
 
 @app.route("/settings")
 def settings():
