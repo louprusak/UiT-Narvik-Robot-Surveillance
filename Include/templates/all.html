@@ -1,6 +1,37 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>All Cams page</h1>
+<div class="row cams">
+    {% for cam in cameras %}
+    <div class="col-sm-12 col-md-12 col-xl-6">
+        <div class="cam">
+            <div class="row">
+                {% if cam.active=='true' %}
+                <span class="dot cam-active"></span>
+                <!--                <div class="col-1 cam-active"></div>-->
+                {% else %}
+                <span class="dot cam-inactive"></span>
+                <!--                <div class="col-1 cam-inactive"></div>-->
+                {% endif %}
+                <h1 class="col-11 cam">{{ cam.name }}</h1>
+            </div>
+            <!--            <video width="100%" autoplay>-->
+            <!--                <source src="{{ url_for('static',filename=cam.src) }}" type="video/mp4">-->
+            <!--                Vidéo not available-->
+            <!--            </video>-->
+
+            <!--            <div class="embed-responsive embed-responsive-16by9">-->
+            <!--                <iframe src="{{ url_for('static',filename='video.mp4') }}" allowfullscreen frameborder="0"></iframe>-->
+            <!--            </div>-->
+            <!--            <div class="embed-responsive embed-responsive-16by9">-->
+            <!--                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"-->
+            <!--                        allowfullscreen></iframe>-->
+            <!--            </div>-->
+            <img src="{{ url_for('static',filename=cam.src) }}" width="100%">
+            <h2 class="cam">{{ cam.date }} - {{ cam.hour }}</h2>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock content %}
 
 

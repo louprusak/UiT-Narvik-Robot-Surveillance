@@ -15,7 +15,13 @@
     <title>Robot Surveillance</title>
     {% endif %}
 </head>
+
+{% if activetab=='home' %}
 <body>
+{% else %}
+<body class="bg-grey">
+{% endif %}
+
 <!--  Navbar  -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top bg-dark" data-bs-theme="dark">
     <div class="container-fluid">
@@ -79,7 +85,7 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid">
     {% block content %}{% endblock %}
 </div>
 

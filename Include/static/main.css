@@ -6,6 +6,10 @@ body{
     margin-top : 100px;
 }
 
+body.bg-grey{
+    background-color: grey;
+}
+
 .page-logo{
     margin-right : 10px;
 }
@@ -31,6 +35,53 @@ a.dropdown-item:hover{
 a.logout:hover{
     color: red;
 }
+
+
+div.cams{
+    margin: 50px;
+    padding: 0px;
+}
+
+div.cam{
+    background-color : white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.cam-active{
+    background-color: green;
+}
+
+.cam-inactive{
+    background-color: red;
+}
+
+h1.cam{
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h2.cam{
+    font-size: 20px;
+    color: black;
+}
+
+.debug{
+    border: 1px solid red;
+}
+
+
 
 
 
