@@ -1,9 +1,16 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from forms import LoginForm
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+db = SQLAlchemy(app)
 
 loggedIn = True;
+
+admins = {'username':'admin','password':'admin'}
 
 cameras = [
     {
@@ -51,21 +58,31 @@ cameras = [
 ]
 
 
-@app.route("/")
+@app.route("/", methods=['GET','POST'])
+@app.route("/login", methods=['GET','POST'])
 def login():
-    return render_template("login.html", title="Login")
+    form = LoginForm()
+    if form.validate_on_submit():
+        if form.username.data == 'admin' and form.password.data == 'admin':
+            return redirect(url_for('home'))
+        else:
+            flash('Login unsuccessful. Check username and password','danger')
+    return render_template("login.html", title="Login", form = form)
 
 
 @app.route("/home")
 def home():
     if loggedIn:
-        return render_template("home.html", title="Home", loggedIn=loggedIn, activetab='home')
+        return render_template("home.html",
+                               title="Home",
+                               loggedIn=loggedIn,
+                               activetab='home')
 
 
 @app.route("/cams")
 def cams():
     if loggedIn:
-        return render_template("cams.html", title="Cams", loggedIn=loggedIn, activetab='cams')
+        return render_template("cams.html", title="Cams", loggedIn=loggedIn, activetab='cams', cameras=cameras)
 
 
 @app.route("/all")

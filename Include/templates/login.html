@@ -28,24 +28,32 @@
     <div class="parentContainer">
         <div class="login">
             <h1>Login</h1>
-
             <hr>
-            <form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="name@example.com">
-                    <label for="exampleInputEmail1">Login</label>
+                    {{ form.username(class="form-control",placeholder="") }}
+                    {{ form.username.label() }}
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                    <label for="exampleInputPassword1">Password</label>
+                    {{ form.password(class="form-control",placeholder="") }}
+                    {{ form.password.label() }}
+<!--                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">-->
+<!--                    <label for="exampleInputPassword1">Password</label>-->
                 </div>
-                <!--    <div class="mb-3 form-check">-->
-                <!--        <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
-                <!--        <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
-                <!--    </div>-->
                 <br><br>
                 <div class="login-btn">
-                    <a href="{{ url_for('home') }}" class="btn btn-dark">SIGN IN</a>
+                    {{ form.submit(class="btn btn-dark") }}
+<!--                    <a href="{{ url_for('home') }}" class="btn btn-dark">LOGIN</a>-->
                 </div>
 
                 <!--    <button type="submit" class="btn btn-primary" >Log In</button>-->

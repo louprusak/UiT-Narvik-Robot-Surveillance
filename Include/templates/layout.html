@@ -30,6 +30,17 @@
                  class="d-inline-block page-logo">
             <strong>UiT</strong> Narvik - Robot Surveillance
         </a>
+        <!--        <button-->
+        <!--                class="navbar-toggler"-->
+        <!--                type="button"-->
+        <!--                data-mdb-toggle="collapse"-->
+        <!--                data-mdb-target="#sidebarMenu"-->
+        <!--                aria-controls="sidebarMenu"-->
+        <!--                aria-expanded="false"-->
+        <!--                aria-label="Toggle navigation"-->
+        <!--        >-->
+        <!--            <span class="navbar-toggler-icon"></span>-->
+        <!--        </button>-->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -86,6 +97,15 @@
 </nav>
 
 <div class="container-fluid">
+<!--    {% with messages = get_flashed_messages(with_categories=true) %}-->
+<!--    {% if messages %}-->
+<!--    {% for category, message in messages %}-->
+<!--    <div class="alert alert-{{ category }}">-->
+<!--        {{ message }}-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+<!--    {% endif %}-->
+<!--    {% endwith %}-->
     {% block content %}{% endblock %}
 </div>
 

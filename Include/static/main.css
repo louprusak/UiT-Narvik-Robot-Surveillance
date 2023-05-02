@@ -81,6 +81,63 @@ h2.cam{
     border: 1px solid red;
 }
 
+.list{
+    border: 1px solid red;
+}
+
+.row{
+    border: 1px solid green;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding: 80px 0 0; /* Height of navbar */
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+    width: 300px;
+    z-index: 600;
+}
+
+.sidebar .active {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.cams-aside{
+    /*margin:110px 10px 0px 310px;
+    border-radius: 10px;
+    padding:20px;
+    height: 85vh;
+    background-color: white;*/
+
+    display: table;
+    height:100%;
+    margin: 0 auto;
+
+    border: 1px solid red;
+}
+
+.cams-focus{
+    display: table-cell;
+    vertical-align: middle;
+
+    border: 1px solid green;
+}
+
+
+
 
 
 
