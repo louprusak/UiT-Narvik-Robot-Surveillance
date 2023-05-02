@@ -15,7 +15,8 @@
                 <h1 class="col-11 cam">{{ cam.name }}</h1>
             </div>
                         <video width="100%" autoplay>
-                            <source src="{{ url_for('static',filename='video.mp4') }}" type="video/mp4">
+<!--                            <source src="{{ url_for('static',filename='video.mp4') }}" type="video/mp4">-->
+                            <source src="rtsp://admin:admin192.168.1.30:554/stream1">
                             Vidéo not available
                         </video>
 
