@@ -1,6 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from forms import LoginForm
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
@@ -10,64 +11,27 @@ db = SQLAlchemy(app)
 
 loggedIn = True;
 
-admins = {'username':'admin','password':'admin'}
+admins = {'username': 'admin', 'password': 'admin'}
 
 cameras = [
-    {
-        'name': 'Front view',
-        'active': 'true',
-        'src': 'cam-view.jpg',
-        'date': '26/04/2023',
-        'hour': '14:50:26'
-    },
-    {
-        'name': 'Rear view',
-        'active': 'false',
-        'src': 'cam-view.jpg',
-        'date': '26/04/2023',
-        'hour': '14:50:26'
-    },
-    {
-        'name': 'Top view',
-        'active': 'true',
-        'src': 'cam-view.jpg',
-        'date': '26/04/2023',
-        'hour': '14:50:26'
-    },
-    {
-        'name': 'Left view',
-        'active': 'false',
-        'src': 'cam-view.jpg',
-        'date': '26/04/2023',
-        'hour': '14:50:26'
-    },
-    {
-        'name': 'Right view',
-        'active': 'true',
-        'src': 'cam-view.jpg',
-        'date': '26/04/2023',
-        'hour': '14:50:26'
-    },
-    {
-        'name': 'Bottom view',
-        'active': 'false',
-        'src': 'cam-view.jpg',
-        'date': '26/04/2023',
-        'hour': '14:50:26'
-    },
+    {'name': 'Front view', 'status': 'true', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Left view', 'status': 'false', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Right view', 'status': 'true', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Back view', 'status': 'false', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Bottom view', 'status': 'false', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Top view', 'status': 'true', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'}
 ]
 
-
-@app.route("/", methods=['GET','POST'])
-@app.route("/login", methods=['GET','POST'])
+@app.route("/", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == 'admin' and form.password.data == 'admin':
             return redirect(url_for('home'))
         else:
-            flash('Login unsuccessful. Check username and password','danger')
-    return render_template("login.html", title="Login", form = form)
+            flash('Login unsuccessful. Check username and password', 'danger')
+    return render_template("login.html", title="Login", form=form)
 
 
 @app.route("/home")

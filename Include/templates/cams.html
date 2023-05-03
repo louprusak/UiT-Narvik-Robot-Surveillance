@@ -16,15 +16,17 @@
 
 <div id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
-        <div class="list-group list-group-flush mx-3 mt-4">
+        <div class="list-group list-group-flush mx-3 mt-4" id="cam-list">
 
             {% for cam in cameras %}
 
             <a href="#"
-               class="list-group-item list-group-item-action py-2 ripple d-flex justify-content-between align-items-center"
-               aria-current="true">
+               class="list-group-item list-group-item-action py-2 ripple d-flex justify-content-between align-items-center cam-item"
+               aria-current="true"
+               data-cam='{{ cam | tojson | replace("\"", "\'") }}'
+            >
                 {{ cam.name }}
-                {% if cam.active=='true' %}
+                {% if cam.status=='true' %}
                 <span class="dot cam-active"></span>
                 {% else %}
                 <span class="dot cam-inactive"></span>
@@ -40,15 +42,21 @@
 <div class="cams-aside">
     <div class="cam-focus">
         <div class="row">
-            <span class="dot cam-active"></span>
-            <h1 class="col-11 cam">Top view</h1>
+            <span class="dot cam-active" id="cam-status"></span>
+            <h1 class="col-11 cam" id="cam-title"></h1>
         </div>
         <video width="80%" autoplay>
-            <source src="rtsp://admin:admin192.168.1.30:554/stream1">
+            <source id="cam-video" src="rtsp://admin:admin192.168.1.30:554/stream1">
             Vidéo not available
         </video>
         <h2 class="cam">20/04/2023 - 10:00:00</h2>
     </div>
 </div>
+
+
+<script src="{{ url_for('static',filename='cams.js') }}"></script>
+
+
+
 
 {% endblock content %}

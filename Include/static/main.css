@@ -122,11 +122,18 @@ h2.cam{
     height: 85vh;
     background-color: white;*/
 
-    display: table;
+    /*display: table;
     height:100%;
     margin: 0 auto;
 
-    border: 1px solid red;
+    border: 1px solid red;*/
+
+    margin-left: 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    height: calc(80% - 80px);
+
 }
 
 .cams-focus{
