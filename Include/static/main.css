@@ -86,7 +86,7 @@ h2.cam{
 }
 
 .row{
-    border: 1px solid green;
+    /*border: 1px solid green;*/
 }
 
 /* Sidebar */
@@ -116,32 +116,55 @@ h2.cam{
 }
 
 .cams-aside{
-    /*margin:110px 10px 0px 310px;
-    border-radius: 10px;
-    padding:20px;
-    height: 85vh;
-    background-color: white;*/
-
-    /*display: table;
-    height:100%;
-    margin: 0 auto;
-
-    border: 1px solid red;*/
-
-    margin-left: 300px;
+    position: absolute;
+    /*top: 105px;*/
+    left: 320px;
+    right:20px;
+    /*bottom:20px;*/
     padding: 20px;
     background-color: white;
     border-radius: 10px;
-    height: calc(80% - 80px);
-
 }
 
-.cams-focus{
-    display: table-cell;
-    vertical-align: middle;
+/*.cams-focus{
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}*/
 
-    border: 1px solid green;
+.video{
+    position: absolute;
+    width:90%;
+    height:90%;
+    padding-top:20px;
 }
+
+.div-video{
+    display:flex;
+    height: calc(100vh - 220px);
+    justify-content: center;
+}
+
+/* TESTS */
+/*
+.div-video{
+    position: relative;
+    width: 100%;
+    justify-content: center;
+}
+
+.div-video iframe{
+    position: absolute;
+    top:0;
+    left:0;
+    width:90%;
+    height:90%;
+    object-fit:cover;
+}
+*/
+/* */
 
 
 

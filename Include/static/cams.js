@@ -1,17 +1,34 @@
 var camList = document.getElementById("cam-list");
+var camsAside = document.querySelector(".cams-aside");
 
 var camTitle = document.getElementById("cam-title");
 var camStatus = document.getElementById("cam-status");
 var camVideo = document.getElementById("cam-video");
 
+camsAside.style.display = 'none';
+
 camList.addEventListener("click", function(event) {
     var target = event.target;
+
+    //Remove previous cam status
+    camStatus.classList.remove('cam-active');
+    camStatus.classList.remove('cam-inactive');
+
+    //Get element click
     if(target && target.nodeName == "A"){
+        //Get data from element
         var item=JSON.parse(event.target.dataset.cam);
-//        var item = target.getAttribute("data-item");
-        console.log(item.name);
+        //Display or not the detail div
+        camsAside.style.display = item ? 'block' : 'none';
+
+        //Update detail informations
         camTitle.innerHTML = item.name;
-        camStatus.className = 'dot' + camData.status === 'true' ? 'cam-active' : 'cam-inactive';
+        if(item.status === 'active'){
+            camStatus.classList.add('cam-active');
+        }else{
+            camStatus.classList.add('cam-inactive');
+        }
+        camVideo.src = item.src;
     }
 });
 

@@ -14,12 +14,12 @@ loggedIn = True;
 admins = {'username': 'admin', 'password': 'admin'}
 
 cameras = [
-    {'name': 'Front view', 'status': 'true', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Left view', 'status': 'false', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Right view', 'status': 'true', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Back view', 'status': 'false', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Bottom view', 'status': 'false', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Top view', 'status': 'true', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'}
+    {'name': 'Front view', 'status': 'active', 'src': 'https://www.youtube.com/embed/dQw4w9WgXcQ', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Left view', 'status': 'inactive', 'src': 'https://www.youtube.com/watch?v=du3Zz4HrGXA', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Right view', 'status': 'active', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Back view', 'status': 'inactive', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Bottom view', 'status': 'inactive', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Top view', 'status': 'active', 'src': 'cam-view.jpg', 'date': '26/04/2023', 'hour': '14:50:00'}
 ]
 
 @app.route("/", methods=['GET', 'POST'])

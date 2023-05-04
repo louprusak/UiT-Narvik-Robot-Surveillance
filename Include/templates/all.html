@@ -5,7 +5,7 @@
     <div class="col-sm-12 col-md-12 col-lg-6">
         <div class="cam">
             <div class="row">
-                {% if cam.status=='true' %}
+                {% if cam.status=='active' %}
                 <span class="dot cam-active"></span>
                 <!--                <div class="col-1 cam-active"></div>-->
                 {% else %}
@@ -14,11 +14,14 @@
                 {% endif %}
                 <h1 class="col-11 cam">{{ cam.name }}</h1>
             </div>
-                        <video width="100%" autoplay>
-<!--                            <source src="{{ url_for('static',filename='video.mp4') }}" type="video/mp4">-->
-                            <source src="rtsp://admin:admin192.168.1.30:554/stream1">
-                            Vidéo not available
-                        </video>
+            <iframe id="cam-video" src="{{ cam.src }}" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+<!--            <iframe id="cam-video" class="video"  width="560" height="315" title="YouTube video player" frameborder="0"-->
+<!--                    allowfullscreen></iframe>-->
+            <!--                        <video width="100%" autoplay>-->
+            <!--&lt;!&ndash;                            <source src="{{ url_for('static',filename='video.mp4') }}" type="video/mp4">&ndash;&gt;-->
+            <!--                            <source src="rtsp://admin:admin192.168.1.30:554/stream1">-->
+            <!--                            Vidéo not available-->
+            <!--                        </video>-->
 
             <!--            <div class="embed-responsive embed-responsive-16by9">-->
             <!--                <iframe src="{{ url_for('static',filename='video.mp4') }}" allowfullscreen frameborder="0"></iframe>-->
@@ -27,8 +30,8 @@
             <!--                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"-->
             <!--                        allowfullscreen></iframe>-->
             <!--            </div>-->
-<!--            <img src="{{ url_for('static',filename=cam.src) }}" width="100%">-->
-            <h2 class="cam">{{ cam.date }} - {{ cam.hour }}</h2>
+            <!--            <img src="{{ url_for('static',filename=cam.src) }}" width="100%">-->
+<!--            <h2 class="cam">{{ cam.date }} - {{ cam.hour }}</h2>-->
         </div>
     </div>
     {% endfor %}
