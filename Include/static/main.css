@@ -132,7 +132,15 @@ h2.cam{
 
 h1.hint{
     color: white;
+    font-size: 20px;
     font-weight: bold;
+}
+
+h1.hint-home{
+    color: grey;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
 }
 
 /*.cams-focus{
@@ -171,6 +179,18 @@ h1.hint{
 
 iframe{
     border-radius: 10px;
+}
+
+.img-home{
+    /*border: 1px solid red;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    width: 80%;
+    height:100%;
+    margin: auto;
+    background-color: none;
 }
 
 /* TESTS */
