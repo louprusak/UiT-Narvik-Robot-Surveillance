@@ -1,10 +1,12 @@
 var camList = document.getElementById("cam-list");
 var camsAside = document.querySelector(".cams-aside");
+var camsHint = document.querySelector(".cams-hint");
 
 var camTitle = document.getElementById("cam-title");
 var camStatus = document.getElementById("cam-status");
 var camVideo = document.getElementById("cam-video");
 
+camsHint.style.display = 'block';
 camsAside.style.display = 'none';
 
 camList.addEventListener("click", function(event) {
@@ -19,6 +21,7 @@ camList.addEventListener("click", function(event) {
         //Get data from element
         var item=JSON.parse(event.target.dataset.cam);
         //Display or not the detail div
+        camsHint.style.display = item ? 'none' : 'block';
         camsAside.style.display = item ? 'block' : 'none';
 
         //Update detail informations

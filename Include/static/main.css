@@ -126,6 +126,15 @@ h2.cam{
     border-radius: 10px;
 }
 
+.cams-hint{
+    margin-left: 320px;
+}
+
+h1.hint{
+    color: white;
+    font-weight: bold;
+}
+
 /*.cams-focus{
     position: relative;
     top: 0;
@@ -134,17 +143,34 @@ h2.cam{
     bottom: 0;
 }*/
 
-.video{
+.video-big{
     position: absolute;
     width:90%;
     height:90%;
     padding-top:20px;
 }
 
+.video-little{
+    width:100%;
+    height:100%;
+
+}
+
 .div-video{
     display:flex;
     height: calc(100vh - 220px);
     justify-content: center;
+}
+
+.div-video-all{
+    display: flex;
+    height: 400px;
+    /*width: 100%;*/
+    justify-content: center;
+}
+
+iframe{
+    border-radius: 10px;
 }
 
 /* TESTS */
