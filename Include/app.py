@@ -14,12 +14,12 @@ loggedIn = True;
 admins = {'username': 'admin', 'password': 'admin'}
 
 cameras = [
-    {'name': 'Front view', 'status': 'active', 'src': 'https://www.youtube.com/embed/dQw4w9WgXcQ', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Left view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Right view', 'status': 'active', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Back view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Bottom view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Top view', 'status': 'active', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'}
+    {'name': 'Left view', 'status': 'active', 'src': 'https://www.youtube.com/embed/dQw4w9WgXcQ', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Top view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
+    {'name': 'Right view', 'status': 'active', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'}
+    # {'name': 'Back view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
+    # {'name': 'Bottom view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
+    # {'name': 'Top view', 'status': 'active', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'}
 ]
 
 @app.route("/", methods=['GET', 'POST'])
@@ -40,7 +40,8 @@ def home():
         return render_template("home.html",
                                title="Home",
                                loggedIn=loggedIn,
-                               activetab='home')
+                               activetab='home',
+                               cameras = cameras)
 
 
 @app.route("/cams")

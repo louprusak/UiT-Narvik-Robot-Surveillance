@@ -175,6 +175,7 @@ h1.hint-home{
     height: 400px;
     /*width: 100%;*/
     justify-content: center;
+    align-content: center;
 }
 
 iframe{
@@ -193,24 +194,29 @@ iframe{
     background-color: none;
 }
 
-/* TESTS */
-/*
-.div-video{
-    position: relative;
-    width: 100%;
-    justify-content: center;
+.col-lg-12 map area:hover {
+  background-color: red;
 }
 
-.div-video iframe{
+#cam1{
     position: absolute;
-    top:0;
-    left:0;
-    width:90%;
-    height:90%;
-    object-fit:cover;
+    left: 39%;
+    top: 17%;
 }
-*/
-/* */
+
+#cam2{
+    position: absolute;
+    left: 42%;
+    top: 52%;
+}
+
+#cam3{
+    position: absolute;
+    left: 46%;
+    top: 96%;
+}
+
+
 
 
 
