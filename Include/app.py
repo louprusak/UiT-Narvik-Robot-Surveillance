@@ -1,18 +1,19 @@
 from flask import Flask, render_template, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from forms import LoginForm
-import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
-db = SQLAlchemy(app)
+#### Data Base ####
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+# db = SQLAlchemy(app)
 
+#### Static for tests #####
 loggedIn = True;
-
+username = 'admin'
+password = 'admin'
 admins = {'username': 'admin', 'password': 'admin'}
-
 cameras = [
     {'name': 'Left view', 'status': 'active', 'src': 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=0', 'date': '26/04/2023', 'hour': '14:50:00'},
     {'name': 'Top view', 'status': 'inactive', 'src': 'https://www.youtube.com/embed/Hy8kmNEo1i8?autoplay=1&mute=1&controls=0', 'date': '26/04/2023', 'hour': '14:50:00'},
@@ -22,12 +23,14 @@ cameras = [
     # {'name': 'Top view', 'status': 'active', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'}
 ]
 
+
+#### Flask Rooting Fonctions ####
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.username.data == 'admin' and form.password.data == 'admin':
+        if form.username.data == username and form.password.data == password:
             return redirect(url_for('home'))
         else:
             flash('Login unsuccessful. Check username and password', 'danger')
