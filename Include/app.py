@@ -1,6 +1,7 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
 from forms import LoginForm
+import cv2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
@@ -22,6 +23,21 @@ cameras = [
     # {'name': 'Bottom view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
     # {'name': 'Top view', 'status': 'active', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'}
 ]
+
+
+def gen():
+    cap = cv2.VideoCapture('rtsp://192.168.1.30:554/stream1')
+    while True:
+        ret, frame = cap.read()
+        if ret:
+            _, jpeg = cv2.imencode('.jpg', frame)
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 
 #### Flask Rooting Fonctions ####
