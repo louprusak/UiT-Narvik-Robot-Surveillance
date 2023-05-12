@@ -29,7 +29,9 @@ cameras = [
 ]
 
 def initCam(cam,url):
+    print("avant")
     cap = cv2.VideoCapture(url)
+    print("apres")
     if not cap.isOpened():
         print("cam inactive")
         cam['status'] = 'inactive'
@@ -37,8 +39,11 @@ def initCam(cam,url):
         print("cam active")
         cam['status'] = 'active'
     #cam['src'] = url
+    print("avant release")
     cap.release()
+    print("apres release")
 
+### TROP LONG A EXECUTER
 def initCams():
     print("InitCams")
     for i in range(len(cam_urls)):
@@ -83,7 +88,6 @@ def video_feed_3():
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    initCams()
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == username and form.password.data == password:
@@ -95,6 +99,7 @@ def login():
 
 @app.route("/home")
 def home():
+    initCams()
     if loggedIn:
         return render_template("home.html",
                                title="Home",
