@@ -25,7 +25,9 @@ cameras = [
 ]
 
 def initCam(cam,url):
+    print("avant")
     cap = cv2.VideoCapture(url)
+    print("apres")
     if not cap.isOpened():
         print("cam inactive")
         cam['status'] = 'inactive'
@@ -33,8 +35,11 @@ def initCam(cam,url):
         print("cam active")
         cam['status'] = 'active'
     #cam['src'] = url
+    print("avant release")
     cap.release()
+    print("apres release")
 
+### TROP LONG A EXECUTER
 def initCams():
     print("InitCams")
     for i in range(len(cam_urls)):
