@@ -15,28 +15,63 @@ loggedIn = True;
 username = 'admin'
 password = 'admin'
 admins = {'username': 'admin', 'password': 'admin'}
-cameras = [
-    {'name': 'Left view', 'status': 'active', 'src': 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=0', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Top view', 'status': 'inactive', 'src': 'https://www.youtube.com/embed/Hy8kmNEo1i8?autoplay=1&mute=1&controls=0', 'date': '26/04/2023', 'hour': '14:50:00'},
-    {'name': 'Right view', 'status': 'active', 'src': 'https://www.youtube.com/embed/k85mRPqvMbE?autoplay=1&mute=1&controls=0', 'date': '26/04/2023', 'hour': '14:50:00'}
-    # {'name': 'Back view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
-    # {'name': 'Bottom view', 'status': 'inactive', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'},
-    # {'name': 'Top view', 'status': 'active', 'src': 'static/video.mp4', 'date': '26/04/2023', 'hour': '14:50:00'}
+
+cam_urls = [
+    'rtsp://192.168.1.30:554/stream1',
+    'rtsp://192.168.1.30:554/stream2',
+    'rtsp://192.168.1.30:554/stream3'
 ]
 
+cameras = [
+    {'name': 'Right View', 'status': '', 'src': 'video_feed_1', 'date': '', 'hour': ''},
+    {'name': 'Top View', 'status': '', 'src': 'video_feed_2', 'date': '', 'hour': ''},
+    {'name': 'Left View', 'status': '', 'src': 'video_feed_3', 'date': '', 'hour': ''}
+]
 
-def gen():
-    cap = cv2.VideoCapture('rtsp://192.168.1.30:554/stream1')
+def initCam(cam,url):
+    cap = cv2.VideoCapture(url)
+    if not cap.isOpened():
+        cam.status = 'inactive'
+    else:
+        cam.status = 'active'
+    cam.src = url
+    cap.release()
+
+def initCams():
+    for i in range(len(cam_urls)):
+        initCam(cameras[i], cam_urls[i])
+
+def gen_frames(url):
+    cap = cv2.VideoCapture(url)
+
     while True:
-        ret, frame = cap.read()
-        if ret:
-            _, jpeg = cv2.imencode('.jpg', frame)
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n')
+        success, frame = cap.read()
 
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        if not success:
+            break
+        else:
+            # conversion de la frame en jpg
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+
+            # envoie de la frame vers la page html
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+@app.route('/video_feed_1')
+def video_feed_1():
+    # envoi du flux video 1
+    return Response(gen_frames(cam_urls[0]), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_feed_2')
+def video_feed_2():
+    # envoi du flux video 2
+    return Response(gen_frames(cam_urls[1]), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_feed_3')
+def video_feed_3():
+    # envoi du flux video 3
+    return Response(gen_frames(cam_urls[2]), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 
@@ -60,7 +95,7 @@ def home():
                                title="Home",
                                loggedIn=loggedIn,
                                activetab='home',
-                               cameras = cameras)
+                               cameras=cameras)
 
 
 @app.route("/cams")
