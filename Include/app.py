@@ -27,17 +27,21 @@ cameras = [
 def initCam(cam,url):
     cap = cv2.VideoCapture(url)
     if not cap.isOpened():
-        cam.status = 'inactive'
+        print("cam inactive")
+        cam['status'] = 'inactive'
     else:
-        cam.status = 'active'
-    cam.src = url
+        print("cam active")
+        cam['status'] = 'active'
+    #cam['src'] = url
     cap.release()
 
 def initCams():
+    print("InitCams")
     for i in range(len(cam_urls)):
         initCam(cameras[i], cam_urls[i])
 
 def gen_frames(url):
+    print("GenFrames")
     cap = cv2.VideoCapture(url)
 
     while True:
@@ -76,6 +80,7 @@ def video_feed_3():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     global is_logged_in
+    initCams()
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == username and form.password.data == password:
