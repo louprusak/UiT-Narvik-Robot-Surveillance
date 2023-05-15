@@ -72,11 +72,9 @@
                     <img src=" {{ url_for('static',filename='account_icon.png') }} " alt="logo" height="30">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
+
                     <li>
-                        <a class="dropdown-item" href="{{ url_for('settings') }}">Settings</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item logout" href="{{ url_for('login') }}">Log Out</a>
+                        <a class="dropdown-item logout" href="{{ url_for('logout') }}">Log Out</a>
                     </li>
                 </ul>
             </div>
