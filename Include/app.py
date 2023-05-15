@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
 # db = SQLAlchemy(app)
 
 #### Static for tests #####
-loggedIn = False
+is_logged_in = False
 username = 'admin'
 password = 'admin'
 admins = {'username': 'admin', 'password': 'admin'}
@@ -25,26 +25,25 @@ cameras = [
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    global loggedIn
+    global is_logged_in
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == username and form.password.data == password:
             print("Login ok")
-            loggedIn = True
+            is_logged_in = True
             return redirect(url_for('home'))
         else:
             print("login pas ok")
-            loggedIn = False
+            is_logged_in = False
             flash('Login unsuccessful. Check username and password', 'danger')
     return render_template("login.html", title="Login", form=form)
 
 
 @app.route("/home")
 def home():
-    if loggedIn:
+    if is_logged_in:
         return render_template("home.html",
                                title="Home",
-                               loggedIn=loggedIn,
                                activetab='home',
                                cameras = cameras)
     else:
@@ -52,15 +51,21 @@ def home():
 
 @app.route("/cams")
 def cams():
-    if loggedIn:
-        return render_template("cams.html", title="Cams", loggedIn=loggedIn, activetab='cams', cameras=cameras)
+    if is_logged_in:
+        return render_template("cams.html",
+                               title="Cams",
+                               activetab='cams',
+                               cameras=cameras)
     else:
         return redirect(url_for('login'))
 
 @app.route("/all")
 def all():
-    if loggedIn:
-        return render_template("all.html", title="All Cams", loggedIn=loggedIn, activetab='all', cameras=cameras)
+    if is_logged_in:
+        return render_template("all.html",
+                               title="All Cams",
+                               activetab='all',
+                               cameras=cameras)
     else:
         return redirect(url_for('login'))
 
@@ -72,7 +77,7 @@ def all():
 
 @app.route("/logout")
 def logout():
-    global loggedIn
+    global is_logged_in
     print('deco')
-    loggedIn = False
+    is_logged_in = False
     return redirect(url_for('login'))
