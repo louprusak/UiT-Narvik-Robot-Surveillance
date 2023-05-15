@@ -1,13 +1,9 @@
 from flask import Flask, render_template, flash, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 from forms import LoginForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
 
-#### Data Base ####
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-# db = SQLAlchemy(app)
 
 #### Static for tests #####
 is_logged_in = False
@@ -29,11 +25,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == username and form.password.data == password:
-            print("Login ok")
             is_logged_in = True
             return redirect(url_for('home'))
         else:
-            print("login pas ok")
             is_logged_in = False
             flash('Login unsuccessful. Check username and password', 'danger')
     return render_template("login.html", title="Login", form=form)
@@ -49,6 +43,7 @@ def home():
     else:
         return redirect(url_for('login'))
 
+
 @app.route("/cams")
 def cams():
     if is_logged_in:
@@ -58,6 +53,7 @@ def cams():
                                cameras=cameras)
     else:
         return redirect(url_for('login'))
+
 
 @app.route("/all")
 def all():
@@ -69,6 +65,7 @@ def all():
     else:
         return redirect(url_for('login'))
 
+
 # @app.route("/settings")
 # def settings():
 #     if loggedIn:
@@ -78,6 +75,5 @@ def all():
 @app.route("/logout")
 def logout():
     global is_logged_in
-    print('deco')
     is_logged_in = False
     return redirect(url_for('login'))
