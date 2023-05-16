@@ -17,6 +17,14 @@ build/
 .idea/
 docs/_build/
 .vscode
+.idea
+/Include/_pycache_
+/Include/instance
+/Include/site
+/Lib
+/Scripts
+pyenv.cfg
+
 
 # Coverage reports
 htmlcov/
