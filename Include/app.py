@@ -1,6 +1,9 @@
 from flask import Flask, render_template, flash, redirect, url_for, Response
 from forms import LoginForm
 import cv2
+import platform
+import subprocess
+from urllib.parse import urlparse
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
@@ -24,45 +27,46 @@ cameras = [
     {'name': 'Left View', 'status': '', 'src': 'video_feed_3', 'date': '', 'hour': ''}
 ]
 
-def initCam(cam,url):
-    print("avant")
-    cap = cv2.VideoCapture(url)
-    print("apres")
-    if not cap.isOpened():
-        print("cam inactive")
-        cam['status'] = 'inactive'
-    else:
-        print("cam active")
-        cam['status'] = 'active'
-    #cam['src'] = url
-    print("avant release")
-    cap.release()
-    print("apres release")
+#### Ping Util Fonction ####
+def ping(host):
+    param = '-n' if platform.system().lower()=='windows' else '-c'
+    command = ['ping', param, '1', host]
+    return subprocess.call(command) == 0
 
-### TROP LONG A EXECUTER
+#### Status Init Cam ####
+def initCam(cam,url):
+    hostname = urlparse(url).hostname
+    if(ping(hostname)):
+        print("cam-active")
+        cam['status'] = 'active'
+    else:
+        print("cam-inactive")
+        cam['status'] = 'inactive'
+
+
+#### Initialization of cams and status ####
 def initCams():
     print("InitCams")
     for i in range(len(cam_urls)):
         initCam(cameras[i], cam_urls[i])
 
+#### Generate frames for video ####
 def gen_frames(url):
     print("GenFrames")
     cap = cv2.VideoCapture(url)
-
     while True:
         success, frame = cap.read()
-
         if not success:
             break
         else:
-            # conversion de la frame en jpg
+            # convertion to jpg
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
-
-            # envoie de la frame vers la page html
+            # send frame to html
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+#### Send video flux to html ####
 @app.route('/video_feed_1')
 def video_feed_1():
     # envoi du flux video 1
@@ -79,13 +83,12 @@ def video_feed_3():
     return Response(gen_frames(cam_urls[2]), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-
 #### Flask Rooting Fonctions ####
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     global is_logged_in
-    #initCams()
+    initCams()
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == username and form.password.data == password:
