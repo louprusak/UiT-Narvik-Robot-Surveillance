@@ -85,7 +85,7 @@ def video_feed_3():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     global is_logged_in
-    initCams()
+    #initCams()
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == username and form.password.data == password:
