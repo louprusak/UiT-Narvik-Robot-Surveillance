@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
 # db = SQLAlchemy(app)
 
 #### Static for tests #####
-loggedIn = True;
+loggedIn = True
 username = 'admin'
 password = 'admin'
 admins = {'username': 'admin', 'password': 'admin'}
