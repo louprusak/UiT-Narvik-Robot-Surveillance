@@ -36,7 +36,7 @@ def ping(host):
 #### Status Init Cam ####
 def initCam(cam,url):
     hostname = urlparse(url).hostname
-    if(ping(hostname)):
+    if ping(hostname):
         print("cam-active")
         cam['status'] = 'active'
     else:
@@ -88,7 +88,7 @@ def video_feed_3():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     global is_logged_in
-    initCams()
+    #initCams()
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == username and form.password.data == password:
@@ -102,6 +102,7 @@ def login():
 
 @app.route("/home")
 def home():
+    initCams()
     if is_logged_in:
         return render_template("home.html",
                                title="Home",
@@ -109,6 +110,7 @@ def home():
                                cameras = cameras)
     else:
         return redirect(url_for('login'))
+
 
 
 @app.route("/cams")
