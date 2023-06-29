@@ -4,6 +4,7 @@
 ####   Author : Loup RUSAK                              ####
 ####----------------------------------------------------####
 ############################################################
+import threading
 
 from flask import Flask, render_template, flash, redirect, url_for, make_response, Response
 from forms import LoginForm
@@ -84,11 +85,15 @@ socket2.setsockopt(zmq.SUBSCRIBE, socket_topics[1])
 socket3.setsockopt(zmq.SUBSCRIBE, socket_topics[2])
 
 
+
+
 ###########################################################
 #### ---------- ZMQ / Flask Video Functions ---------- ####
 ###########################################################
 
-last_visualization_time = None
+last_visualization_time1 = None
+last_visualization_time2 = None
+last_visualization_time3 = None
 
 #### Ping Util Fonction ####
 def ping(host):
@@ -114,13 +119,13 @@ def initCams():
         initCam(cameras[i], cam_urls[i])
 
 
-def receive_encode_video(socket):
-    global last_visualization_time
+def receive_encode_video1():
+    global last_visualization_time1
     frame_time = 0.0001
     while True:
         try:
             # Receiving data from server
-            topic, data = socket.recv_multipart(zmq.NOBLOCK)
+            topic, data = socket1.recv_multipart(zmq.NOBLOCK)
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
             decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
@@ -128,15 +133,77 @@ def receive_encode_video(socket):
             frame = encoded_frame[1].tobytes()
             # Update when leaving and come back
             current_time = time.time()
-            if last_visualization_time is not None:
-                elapsed_time = current_time - last_visualization_time
+            if last_visualization_time1 is not None:
+                elapsed_time = current_time - last_visualization_time1
                 skipped_frames = int(elapsed_time / frame_time)
                 for _ in range(skipped_frames):
                     try:
-                        socket.recv_multipart(zmq.NOBLOCK)
+                        socket1.recv_multipart(zmq.NOBLOCK)
                     except zmq.error.Again:
                         break
-            last_visualization_time = current_time
+            last_visualization_time1 = current_time
+            # Send frame to html
+            yield (
+                b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
+            )
+        except zmq.error.Again:
+            time.sleep(frame_time)
+
+def receive_encode_video2():
+    global last_visualization_time2
+    frame_time = 0.0001
+    while True:
+        try:
+            # Receiving data from server
+            topic, data = socket2.recv_multipart(zmq.NOBLOCK)
+            # Data to frames
+            np_data = np.frombuffer(data, np.uint8)
+            decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
+            encoded_frame = cv2.imencode('.jpg', decoded_frame)
+            frame = encoded_frame[1].tobytes()
+            # Update when leaving and come back
+            current_time = time.time()
+            if last_visualization_time2 is not None:
+                elapsed_time = current_time - last_visualization_time2
+                skipped_frames = int(elapsed_time / frame_time)
+                for _ in range(skipped_frames):
+                    try:
+                        socket2.recv_multipart(zmq.NOBLOCK)
+                    except zmq.error.Again:
+                        break
+            last_visualization_time2 = current_time
+            # Send frame to html
+            yield (
+                b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
+            )
+        except zmq.error.Again:
+            time.sleep(frame_time)
+
+def receive_encode_video3():
+    global last_visualization_time3
+    frame_time = 0.0001
+    while True:
+        try:
+            # Receiving data from server
+            topic, data = socket3.recv_multipart(zmq.NOBLOCK)
+            # Data to frames
+            np_data = np.frombuffer(data, np.uint8)
+            decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
+            encoded_frame = cv2.imencode('.jpg', decoded_frame)
+            frame = encoded_frame[1].tobytes()
+            # Update when leaving and come back
+            current_time = time.time()
+            if last_visualization_time3 is not None:
+                elapsed_time = current_time - last_visualization_time3
+                skipped_frames = int(elapsed_time / frame_time)
+                for _ in range(skipped_frames):
+                    try:
+                        socket3.recv_multipart(zmq.NOBLOCK)
+                    except zmq.error.Again:
+                        break
+            last_visualization_time3 = current_time
             # Send frame to html
             yield (
                 b'--frame\r\n'
@@ -147,16 +214,16 @@ def receive_encode_video(socket):
 
 @app.route('/video_feed_1')
 def video_feed_1():
-    return Response(receive_encode_video(socket1), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(receive_encode_video1(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/video_feed_2')
 def video_feed_2():
-    return Response(receive_encode_video(socket2), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(receive_encode_video2(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_feed_3')
 def video_feed_3():
-    return Response(receive_encode_video(socket3), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(receive_encode_video3(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 #####################################################################
@@ -221,4 +288,22 @@ def logout():
     return redirect(url_for('login'))
 
 
+###########################################################
+#### ---------- Multithreading configuration --------- ####
+###########################################################
 
+thread1 = threading.Thread(target=receive_encode_video1)
+thread2 = threading.Thread(target=receive_encode_video2)
+thread3 = threading.Thread(target=receive_encode_video3)
+
+thread1.start()
+thread2.start()
+thread3.start()
+
+###########################################################
+#### ---------- Multithreading configuration --------- ####
+###########################################################
+
+
+if __name__ == '__main__':
+    app.run(threaded=True)
