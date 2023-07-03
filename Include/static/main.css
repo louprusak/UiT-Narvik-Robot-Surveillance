@@ -164,7 +164,7 @@ h1.hint-home{
 
 .div-video{
     display:flex;
-    height: calc(100vh - 220px);
+    height: calc(100vh - 190px);
     justify-content: center;
 }
 
