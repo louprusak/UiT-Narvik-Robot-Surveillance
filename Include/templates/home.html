@@ -1,14 +1,17 @@
+<!--#################################################-->
+<!--   Home Page for Flask Web App for UiT Narvik    -->
+<!--   Author : Loup RUSAK                           -->
+<!--#################################################-->
+
 {% extends "layout.html" %}
 {% block content %}
 
-<!--</body>-->
-<!--<div class="container-fluid">-->
-<!--    <div class="row">-->
 <div class="col-lg-12">
+
 <!--    <h1 class="hint-home">Click on a camera to see the video.</h1>-->
 
+    <!--  Display button with status color for all cameras added to the website  -->
     <div align="center">
-
         {% for cam in cameras %}
         {% if cam.status=='active' %}
         <a href="{{ url_for('cams') }}" class="btn btn-success">{{cam.name}}</a>
@@ -20,6 +23,7 @@
 
     <hr>
 
+    <!--  Robot and cameras graphic hint  -->
     <img class="img-home center" src="{{ url_for('static',filename='robot_text.png') }}" usemap="#map">
 
     <!--  Image cliquable (WIP)  -->

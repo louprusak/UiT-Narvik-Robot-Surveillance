@@ -33,9 +33,9 @@ admins = {'username': 'admin', 'password': 'admin'}
 
 # Cameras data
 cam_urls = [
-    'rtsp://10.0.0.30:554/stream1',
-    'rtsp://10.0.0.31:554/stream1',
-    'rtsp://10.0.0.32:554/stream1'
+    'rtsp://10.0.0.30:554/stream2',
+    'rtsp://10.0.0.31:554/stream2',
+    'rtsp://10.0.0.32:554/stream2'
 ]
 cameras = [
     {'name': 'Right View', 'status': '', 'src': 'video_feed_1', 'date': '', 'hour': ''},
@@ -83,8 +83,6 @@ print("Sockets subscribing...")
 socket1.setsockopt(zmq.SUBSCRIBE, socket_topics[0])
 socket2.setsockopt(zmq.SUBSCRIBE, socket_topics[1])
 socket3.setsockopt(zmq.SUBSCRIBE, socket_topics[2])
-
-
 
 
 ###########################################################
@@ -214,16 +212,37 @@ def receive_encode_video3():
 
 @app.route('/video_feed_1')
 def video_feed_1():
-    return Response(receive_encode_video1(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    response = make_response(receive_encode_video1())
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
+    return response
+
+    # return Response(receive_encode_video1(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/video_feed_2')
 def video_feed_2():
-    return Response(receive_encode_video2(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    response = make_response(receive_encode_video2())
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
+    return response
+
+    # return Response(receive_encode_video2(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_feed_3')
 def video_feed_3():
-    return Response(receive_encode_video3(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    response = make_response(receive_encode_video3())
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
+    return response
+
+    # return Response(receive_encode_video3(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 #####################################################################
@@ -301,7 +320,7 @@ thread2.start()
 thread3.start()
 
 ###########################################################
-#### ---------- Multithreading configuration --------- ####
+#### -------------- App configuration ---------------- ####
 ###########################################################
 
 

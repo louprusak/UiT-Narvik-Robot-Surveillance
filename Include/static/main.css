@@ -1,3 +1,8 @@
+/**********************************************/
+/* CSS Sheet for Flask Web App for UiT Narvik */
+/* Author : Loup RUSAK                        */
+/**********************************************/
+
 h1{
     color: blue;
 }
@@ -142,14 +147,6 @@ h1.hint-home{
     font-weight: bold;
     text-align: center;
 }
-
-/*.cams-focus{
-    position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}*/
 
 .video-big{
     position: absolute;

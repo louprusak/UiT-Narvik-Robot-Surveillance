@@ -1,3 +1,10 @@
+////////////////////////////////////////////////////////////////
+////--------------------------------------------------------////
+////   JS Script for cam page master detail for UiT Narvik  ////
+////   Author : Loup RUSAK                                  ////
+////--------------------------------------------------------////
+////////////////////////////////////////////////////////////////
+
 var camList = document.getElementById("cam-list");
 var camsAside = document.querySelector(".cams-aside");
 var camsHint = document.querySelector(".cams-hint");
@@ -35,35 +42,3 @@ camList.addEventListener("click", function(event) {
     }
 });
 
-// Récupérer la liste des caméras
-//const camList = document.getElementById('cam-list').children;
-//
-//// Ajouter un écouteur d'événement "click" pour chaque caméra
-//for (let i = 0; i < camList.length; i++) {
-//  camList[i].addEventListener('click', function(event) {
-//    // Empêcher le lien d'être suivi
-//    event.preventDefault();
-//
-//    // Récupérer les données de la caméra sélectionnée
-//    const camData = JSON.parse(this.dataset.cam);
-//
-//    // Mettre à jour l'affichage avec les données de la caméra sélectionnée
-//    document.getElementById('cam-title').textContent = camData.name;
-//    document.getElementById('cam-status').className = camData.status === 'true' ? 'dot cam-active' : 'dot cam-inactive';
-//    document.getElementById('cam-video').src = camData.src;
-//    document.getElementById('cam-date').textContent = camData.date;
-//    document.getElementById('cam-hour').textContent = camData.hour;
-//  });
-//}
-
-//var camList = document.getElementById('cam-list');
-//var camItems = camList.getElementsByClassName('cam-item');
-//
-//for (var i = 0; i < camItems.length; i++) {
-//  camItems[i].addEventListener('click', function() {
-//    var camData = this.getAttribute('data-cam');
-//    console.log(camData);
-//    var camObj = JSON.parse(camData);
-//    console.log(camObj.name);
-//  });
-//}

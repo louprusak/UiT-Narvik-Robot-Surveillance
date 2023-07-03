@@ -1,3 +1,8 @@
+/************************************************************/
+/* CSS Sheet for Logn Page for Flask Web App for UiT Narvik */
+/* Author : Loup RUSAK                                      */
+/************************************************************/
+
 body{
     margin-top : 200px;
 }
@@ -22,7 +27,7 @@ div.login{
 }
 
 .background-image{
-    background-image: url('../static/uit3.png');
+    background-image: url('../static/uit_background.png');
     background-position: center;
     height: 50vh;
     background-repeat: no-repeat;
