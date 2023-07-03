@@ -1,6 +1,12 @@
+<!--#################################################-->
+<!--   Cams page for Flask Web App for UiT Narvik    -->
+<!--   Author : Loup RUSAK                           -->
+<!--#################################################-->
+
 {% extends "layout.html" %}
 {% block content %}
 
+<!-- SideBar Menu to choose a cam to see -->
 <div id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
     <div class="position-sticky">
         <div class="list-group list-group-flush mx-3 mt-4" id="cam-list">
@@ -22,29 +28,23 @@
     </div>
 </div>
 
+<!-- If no list item clicked, display hint -->
 <div class="cams-hint">
     <h1 class="hint">Select a viewing angle to see the video.</h1>
 </div>
 
+<!-- Display title, status and video of the selected camera -->
 <div class="cams-aside">
-<!--    <div class="cam-focus">-->
         <div class="row">
             <span class="dot" id="cam-status"></span>
             <h1 class="col-11 cam" id="cam-title"></h1>
         </div>
-<!--        <div class="embed-responsive embed-responsive-16by9">-->
-<!--            <iframe id="cam-video" class="video embed-responsive-item" title="YouTube video player" frameborder="0" allowfullscreen></iframe>-->
-<!--        </div>-->
-
         <div class="div-video">
-<!--            <iframe id="cam-video" class="video-big" title="YouTube video player" frameborder="0" allowfullscreen></iframe>-->
-            <iframe id="cam-video" class="video-big" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+            <img id="cam-video">
         </div>
-<!--    </div>-->
 </div>
 
-
+<!-- Script for master detail click and display -->
 <script src="{{ url_for('static',filename='cams.js') }}"></script>
-
 
 {% endblock content %}

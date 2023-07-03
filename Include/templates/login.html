@@ -1,3 +1,8 @@
+<!--##################################################-->
+<!--   Login Page for Flask Web App for UiT Narvik    -->
+<!--   Author : Loup RUSAK                            -->
+<!--##################################################-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,16 +52,11 @@
                 <div class="form-floating">
                     {{ form.password(class="form-control",placeholder="") }}
                     {{ form.password.label() }}
-<!--                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">-->
-<!--                    <label for="exampleInputPassword1">Password</label>-->
                 </div>
                 <br><br>
                 <div class="login-btn">
                     {{ form.submit(class="btn btn-dark") }}
-<!--                    <a href="{{ url_for('home') }}" class="btn btn-dark">LOGIN</a>-->
                 </div>
-
-                <!--    <button type="submit" class="btn btn-primary" >Log In</button>-->
             </form>
 
         </div>

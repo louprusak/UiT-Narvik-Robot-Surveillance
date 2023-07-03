@@ -1,3 +1,10 @@
+############################################################
+####----------------------------------------------------####
+####    Login form backend for website for UiT Narvik   ####
+####   Author : Loup RUSAK                              ####
+####----------------------------------------------------####
+############################################################
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length
