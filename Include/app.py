@@ -31,7 +31,8 @@ username = 'admin'
 password = 'admin'
 admins = {'username': 'admin', 'password': 'admin'}
 
-# Cameras data
+# Urls of the server sockets
+# Need to change the ip when using other machine
 cam_urls = [
     'rtsp://10.0.0.228:554/stream1',
     'rtsp://10.0.0.229:554/stream1',
