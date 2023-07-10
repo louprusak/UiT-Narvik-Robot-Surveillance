@@ -33,9 +33,9 @@ admins = {'username': 'admin', 'password': 'admin'}
 
 # Cameras data
 cam_urls = [
-    'rtsp://10.0.0.30:554/stream2',
-    'rtsp://10.0.0.31:554/stream2',
-    'rtsp://10.0.0.32:554/stream2'
+    'rtsp://10.0.0.228:554/stream1',
+    'rtsp://10.0.0.229:554/stream1',
+    'rtsp://10.0.0.231:554/stream1'
 ]
 cameras = [
     {'name': 'Right View', 'status': '', 'src': 'video_feed_1', 'date': '', 'hour': ''},
