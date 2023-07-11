@@ -50,11 +50,14 @@ cameras = [
 ###############################################################
 
 # Sockets data
+# Bind flask app sockets to server video streams sockets
+# If just local : localhost
 socket_ips = [
-    "tcp://localhost:5555",
-    "tcp://localhost:5556",
-    "tcp://localhost:5557"
+    "tcp://10.0.0.103:5555",
+    "tcp://10.0.0.103:5556",
+    "tcp://10.0.0.103:5557"
 ]
+# topics to receive for data security
 socket_topics = [
     b"cam1",
     b"cam2",
