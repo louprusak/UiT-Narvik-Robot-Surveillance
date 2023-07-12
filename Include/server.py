@@ -64,6 +64,8 @@ thread_cam_1.start()
 thread_cam_2.start()
 thread_cam_3.start()
 
+print("\nRunning...")
+
 thread_cam_1.join()
 thread_cam_2.join()
 thread_cam_3.join()
