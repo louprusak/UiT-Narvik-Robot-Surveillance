@@ -15,6 +15,7 @@ from urllib.parse import urlparse
 import numpy as np
 import zmq
 import time
+from waitress import serve
 
 
 ######################################################
@@ -31,12 +32,11 @@ username = 'admin'
 password = 'admin'
 admins = {'username': 'admin', 'password': 'admin'}
 
-# Urls of the server sockets
-# Need to change the ip when using other machine
+# Cameras data
 cam_urls = [
-    'rtsp://10.0.0.228:554/stream1',
-    'rtsp://10.0.0.229:554/stream1',
-    'rtsp://10.0.0.231:554/stream1'
+    'rtsp://10.0.0.228:554/stream2',
+    'rtsp://10.0.0.229:554/stream2',
+    'rtsp://10.0.0.231:554/stream2'
 ]
 cameras = [
     {'name': 'Right View', 'status': '', 'src': 'video_feed_1', 'date': '', 'hour': ''},
@@ -53,9 +53,9 @@ cameras = [
 # Bind flask app sockets to server video streams sockets
 # If just local : localhost
 socket_ips = [
-    "tcp://10.0.0.103:5555",
-    "tcp://10.0.0.103:5556",
-    "tcp://10.0.0.103:5557"
+    "tcp://10.0.0.101:5555",
+    "tcp://10.0.0.101:5556",
+    "tcp://10.0.0.101:5557"
 ]
 # topics to receive for data security
 socket_topics = [
@@ -329,4 +329,6 @@ thread3.start()
 
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    # app.run(threaded=True)
+    print("Running...")
+    serve(app, host='0.0.0.0', port=8080)

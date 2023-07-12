@@ -164,9 +164,10 @@ h1.hint-home{
 
 .div-video{
     display:flex;
-    height: calc(100vh - 190px);
+    height: calc(100vh - 220px);
     justify-content: center;
 }
+
 
 .div-video-all{
     display: flex;
