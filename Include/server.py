@@ -19,14 +19,26 @@ import threading
 
 # Network and socket configuration
 context = zmq.Context()
+
 print("Creating sockets...")
+
 socket1 = context.socket(zmq.PUB)
 socket2 = context.socket(zmq.PUB)
 socket3 = context.socket(zmq.PUB)
+
+server_sockets_ips = [
+    'tcp://10.0.0.101:5555'
+    'tcp://10.0.0.101:5556'
+    'tcp://10.0.0.101:5557'
+]
+
 print("Binding sockets...")
 socket1.bind("tcp://*:5555")
 socket2.bind("tcp://*:5556")
 socket3.bind("tcp://*:5557")
+# socket1.connect(server_sockets_ips[0])
+# socket2.connect(server_sockets_ips[1])
+# socket3.connect(server_sockets_ips[2])
 
 # Cameras configuration
 cam_urls = [
@@ -73,3 +85,9 @@ thread_cam_3.join()
 cap1.release()
 cap2.release()
 cap3.release()
+
+socket1.close()
+socket2.close()
+socket3.close()
+
+context.term()
