@@ -33,9 +33,9 @@ admins = {'username': 'admin', 'password': 'admin'}
 
 # Cameras data
 cam_urls = [
-    'rtsp://10.0.0.228:554/stream2',
-    'rtsp://10.0.0.229:554/stream2',
-    'rtsp://10.0.0.231:554/stream2'
+    'rtsp://158.39.25.126:554/stream2',
+    'rtsp://158.39.25.126:554/stream2',
+    'rtsp://158.39.25.126:554/stream2'
 ]
 cameras = [
     {'name': 'Right View', 'status': '', 'src': 'video_feed_1', 'date': '', 'hour': ''},
@@ -52,9 +52,9 @@ cameras = [
 # Bind flask app sockets to server video streams sockets
 # If just local : localhost
 socket_ips = [
-    "tcp://10.0.0.101:5555",
-    "tcp://10.0.0.101:5556",
-    "tcp://10.0.0.101:5557"
+    "tcp://158.39.25.126:5555",
+    "tcp://158.39.25.126:5556",
+    "tcp://158.39.25.126:5557"
 ]
 # topics to receive for data security
 socket_topics = [
