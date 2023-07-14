@@ -15,6 +15,7 @@ from urllib.parse import urlparse
 import numpy as np
 import zmq
 import time
+from waitress import serve
 
 
 ######################################################
