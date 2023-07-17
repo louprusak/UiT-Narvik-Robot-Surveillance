@@ -69,7 +69,8 @@ def capture_send_video(socket, cap, n):
         # Send frames with topic
         # socket.send_multipart([topic.encode(), frame_data])
         socket.send(frame_data)
-        print("ok")
+        message = socket.recv()
+        print(message)
 
 # Main Program
 print("Creating threads...")

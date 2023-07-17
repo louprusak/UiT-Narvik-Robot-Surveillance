@@ -55,17 +55,17 @@ cameras = [
 # Replace ip and port
 # If just local : localhost
 local_socket_ips = [
-    "tcp://10.0.0.8:5555",
-    "tcp://10.0.0.8:5556",
-    "tcp://10.0.0.8:5557"
+    "tcp://10.0.0.103:5555",
+    "tcp://10.0.0.103:5556",
+    "tcp://10.0.0.103:5557"
 ]
 # Topics to receive for data security
 # One topic to receive per camera stream socket
-socket_topics = [
-    b"cam1",
-    b"cam2",
-    b"cam3"
-]
+# socket_topics = [
+#     b"cam1",
+#     b"cam2",
+#     b"cam3"
+# ]
 
 # Get ZMQ context
 context = zmq.Context()
@@ -89,10 +89,10 @@ socket2.connect(local_socket_ips[1])
 socket3.connect(local_socket_ips[2])
 
 # Subscription to all topics
-print("Sockets subscribing...")
-socket1.setsockopt(zmq.SUBSCRIBE, socket_topics[0])
-socket2.setsockopt(zmq.SUBSCRIBE, socket_topics[1])
-socket3.setsockopt(zmq.SUBSCRIBE, socket_topics[2])
+# print("Sockets subscribing...")
+# socket1.setsockopt(zmq.SUBSCRIBE, socket_topics[0])
+# socket2.setsockopt(zmq.SUBSCRIBE, socket_topics[1])
+# socket3.setsockopt(zmq.SUBSCRIBE, socket_topics[2])
 
 
 ###########################################################
@@ -134,6 +134,7 @@ def receive_encode_video1():
             # Receiving data from server
             # topic, data = socket1.recv_multipart(zmq.NOBLOCK)
             data = socket1.recv(zmq.NOBLOCK)
+            socket1.send(b"ok")
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
             decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
@@ -165,7 +166,8 @@ def receive_encode_video2():
         try:
             # Receiving data from server
             # topic, data = socket2.recv_multipart(zmq.NOBLOCK)
-            data = socket1.recv(zmq.NOBLOCK)
+            data = socket2.recv(zmq.NOBLOCK)
+            socket2.send(b"ok")
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
             decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
@@ -197,7 +199,8 @@ def receive_encode_video3():
         try:
             # Receiving data from server
             # topic, data = socket2.recv_multipart(zmq.NOBLOCK)
-            data = socket1.recv(zmq.NOBLOCK)
+            data = socket3.recv(zmq.NOBLOCK)
+            socket3.send(b"ok")
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
             decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
