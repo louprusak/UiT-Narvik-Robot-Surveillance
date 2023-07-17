@@ -12,4 +12,4 @@ random.seed()
 
 while True:
     workload = random.randint(1, 100)
-    sink.send(str(workload))
+    sink.send(b"ok")

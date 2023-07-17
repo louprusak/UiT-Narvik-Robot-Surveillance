@@ -55,17 +55,17 @@ cameras = [
 # Replace ip and port
 # If just local : localhost
 local_socket_ips = [
-    "tcp://10.0.0.103:5555",
-    "tcp://10.0.0.103:5556",
-    "tcp://10.0.0.103:5557"
+    "tcp://*:5555",
+    "tcp://*:5556",
+    "tcp://*:5557"
 ]
 # Topics to receive for data security
 # One topic to receive per camera stream socket
-# socket_topics = [
-#     b"cam1",
-#     b"cam2",
-#     b"cam3"
-# ]
+socket_topics = [
+    b"cam1",
+    b"cam2",
+    b"cam3"
+]
 
 # Get ZMQ context
 context = zmq.Context()
@@ -75,24 +75,30 @@ print("Creating sockets...")
 # socket1 = context.socket(zmq.SUB)
 # socket2 = context.socket(zmq.SUB)
 # socket3 = context.socket(zmq.SUB)
-socket1 = context.socket(zmq.REP)
-socket2 = context.socket(zmq.REP)
-socket3 = context.socket(zmq.REP)
+# socket1 = context.socket(zmq.REP)
+# socket2 = context.socket(zmq.REP)
+# socket3 = context.socket(zmq.REP)
+socket1 = context.socket(zmq.PULL)
+socket2 = context.socket(zmq.PULL)
+socket3 = context.socket(zmq.PULL)
 socket1.setsockopt(zmq.RCVTIMEO,0)
 socket2.setsockopt(zmq.RCVTIMEO,0)
 socket3.setsockopt(zmq.RCVTIMEO,0)
 
 # Connect sockets to server
 print("Binding sockets...")
-socket1.connect(local_socket_ips[0])
-socket2.connect(local_socket_ips[1])
-socket3.connect(local_socket_ips[2])
+# socket1.connect(local_socket_ips[0])
+# socket2.connect(local_socket_ips[1])
+# socket3.connect(local_socket_ips[2])
+socket1.bind(local_socket_ips[0])
+socket2.bind(local_socket_ips[1])
+socket3.bind(local_socket_ips[2])
 
 # Subscription to all topics
-# print("Sockets subscribing...")
-# socket1.setsockopt(zmq.SUBSCRIBE, socket_topics[0])
-# socket2.setsockopt(zmq.SUBSCRIBE, socket_topics[1])
-# socket3.setsockopt(zmq.SUBSCRIBE, socket_topics[2])
+print("Sockets subscribing...")
+socket1.setsockopt(zmq.SUBSCRIBE, socket_topics[0])
+socket2.setsockopt(zmq.SUBSCRIBE, socket_topics[1])
+socket3.setsockopt(zmq.SUBSCRIBE, socket_topics[2])
 
 
 ###########################################################
@@ -132,8 +138,8 @@ def receive_encode_video1():
     while True:
         try:
             # Receiving data from server
-            # topic, data = socket1.recv_multipart(zmq.NOBLOCK)
-            data = socket1.recv(zmq.NOBLOCK)
+            topic, data = socket1.recv_multipart(zmq.NOBLOCK)
+            # data = socket1.recv(zmq.NOBLOCK)
             socket1.send(b"ok")
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
@@ -165,8 +171,8 @@ def receive_encode_video2():
     while True:
         try:
             # Receiving data from server
-            # topic, data = socket2.recv_multipart(zmq.NOBLOCK)
-            data = socket2.recv(zmq.NOBLOCK)
+            topic, data = socket2.recv_multipart(zmq.NOBLOCK)
+            # data = socket2.recv(zmq.NOBLOCK)
             socket2.send(b"ok")
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
@@ -198,8 +204,8 @@ def receive_encode_video3():
     while True:
         try:
             # Receiving data from server
-            # topic, data = socket2.recv_multipart(zmq.NOBLOCK)
-            data = socket3.recv(zmq.NOBLOCK)
+            topic, data = socket3.recv_multipart(zmq.NOBLOCK)
+            # data = socket3.recv(zmq.NOBLOCK)
             socket3.send(b"ok")
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
