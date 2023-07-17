@@ -54,10 +54,10 @@ cameras = [
 # One for each camera
 # Replace ip and port
 # If just local : localhost
-socket_ips = [
-    "tcp://158.39.25.126:5555",
-    "tcp://158.39.25.126:5556",
-    "tcp://158.39.25.126:5557"
+local_socket_ips = [
+    "tcp://10.0.0.8:5555",
+    "tcp://10.0.0.8:5556",
+    "tcp://10.0.0.8:5557"
 ]
 # Topics to receive for data security
 # One topic to receive per camera stream socket
@@ -72,18 +72,21 @@ context = zmq.Context()
 
 # Creation of sockets
 print("Creating sockets...")
-socket1 = context.socket(zmq.SUB)
-socket2 = context.socket(zmq.SUB)
-socket3 = context.socket(zmq.SUB)
+# socket1 = context.socket(zmq.SUB)
+# socket2 = context.socket(zmq.SUB)
+# socket3 = context.socket(zmq.SUB)
+socket1 = context.socket(zmq.REP)
+socket2 = context.socket(zmq.REP)
+socket3 = context.socket(zmq.REP)
 socket1.setsockopt(zmq.RCVTIMEO,0)
 socket2.setsockopt(zmq.RCVTIMEO,0)
 socket3.setsockopt(zmq.RCVTIMEO,0)
 
 # Connect sockets to server
 print("Binding sockets...")
-socket1.connect(socket_ips[0])
-socket2.connect(socket_ips[1])
-socket3.connect(socket_ips[2])
+socket1.connect(local_socket_ips[0])
+socket2.connect(local_socket_ips[1])
+socket3.connect(local_socket_ips[2])
 
 # Subscription to all topics
 print("Sockets subscribing...")
@@ -117,10 +120,10 @@ def initCam(cam,url):
         cam['status'] = 'inactive'
 
 #### Initialization of cams and status ####
-def initCams():
-    print("InitCams")
-    for i in range(len(cam_urls)):
-        initCam(cameras[i], cam_urls[i])
+# def initCams():
+#     print("InitCams")
+#     for i in range(len(cam_urls)):
+#         initCam(cameras[i], cam_urls[i])
 
 
 def receive_encode_video1():
@@ -273,7 +276,7 @@ def login():
 #### Home page rooting function ####
 @app.route("/home")
 def home():
-    initCams()
+    # initCams()
     if is_logged_in:
         return render_template("home.html",
                                title="Home",

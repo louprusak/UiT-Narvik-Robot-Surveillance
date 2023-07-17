@@ -22,26 +22,30 @@ context = zmq.Context()
 
 print("Creating sockets...")
 
-socket1 = context.socket(zmq.PUB)
-socket2 = context.socket(zmq.PUB)
-socket3 = context.socket(zmq.PUB)
+# socket1 = context.socket(zmq.PUB)
+# socket2 = context.socket(zmq.PUB)
+# socket3 = context.socket(zmq.PUB)
 
-server_sockets_ips = [
-    'tcp://10.0.0.101:5555'
-    'tcp://10.0.0.101:5556'
-    'tcp://10.0.0.101:5557'
+socket1 = context.socket(zmq.REQ)
+socket2 = context.socket(zmq.REQ)
+socket3 = context.socket(zmq.REQ)
+
+cloud_server_sockets_ips = [
+    'tcp://20.100.204.66:5555'
+    'tcp://20.100.204.66:5556'
+    'tcp://20.100.204.66:5557'
 ]
 
 print("Binding sockets...")
-socket1.bind("tcp://*:5555")
-socket2.bind("tcp://*:5556")
-socket3.bind("tcp://*:5557")
-# socket1.connect(server_sockets_ips[0])
-# socket2.connect(server_sockets_ips[1])
-# socket3.connect(server_sockets_ips[2])
+# socket1.bind("tcp://*:5555")
+# socket2.bind("tcp://*:5556")
+# socket3.bind("tcp://*:5557")
+socket1.connect(cloud_server_sockets_ips[0])
+socket2.connect(cloud_server_sockets_ips[1])
+socket3.connect(cloud_server_sockets_ips[2])
 
 # Cameras configuration
-cam_urls = [
+local_cam_urls = [
     'rtsp://10.0.0.228:554/stream1',
     'rtsp://10.0.0.229:554/stream1',
     'rtsp://10.0.0.231:554/stream1'
@@ -49,9 +53,9 @@ cam_urls = [
 
 # Video capture of cameras
 print("Capturing video streams...")
-cap1 = cv2.VideoCapture(cam_urls[0])
-cap2 = cv2.VideoCapture(cam_urls[1])
-cap3 = cv2.VideoCapture(cam_urls[2])
+cap1 = cv2.VideoCapture(local_cam_urls[0])
+cap2 = cv2.VideoCapture(local_cam_urls[1])
+cap3 = cv2.VideoCapture(local_cam_urls[2])
 
 # Capture camera video and send it to client
 def capture_send_video(socket, cap, n):
