@@ -4,7 +4,6 @@
 ####   Author : Loup RUSAK                              ####
 ####----------------------------------------------------####
 ############################################################
-import threading
 
 from flask import Flask, render_template, flash, redirect, url_for, make_response, Response
 from forms import LoginForm
@@ -15,6 +14,7 @@ from urllib.parse import urlparse
 import numpy as np
 import zmq
 import time
+import threading
 from waitress import serve
 
 
@@ -33,15 +33,15 @@ password = 'admin'
 admins = {'username': 'admin', 'password': 'admin'}
 
 # Cameras data
-cam_urls = [
-    'rtsp://158.39.25.126:554/stream2',
-    'rtsp://158.39.25.126:554/stream2',
-    'rtsp://158.39.25.126:554/stream2'
-]
+# cam_urls = [
+#     'rtsp://158.39.25.126:554/stream2',
+#     'rtsp://158.39.25.126:554/stream2',
+#     'rtsp://158.39.25.126:554/stream2'
+# ]
 cameras = [
-    {'name': 'Right View', 'status': '', 'src': 'video_feed_1', 'date': '', 'hour': ''},
-    {'name': 'Top View', 'status': '', 'src': 'video_feed_2', 'date': '', 'hour': ''},
-    {'name': 'Left View', 'status': '', 'src': 'video_feed_3', 'date': '', 'hour': ''}
+    {'name': 'Right View', 'status': '', 'src': 'video_feed_1'},
+    {'name': 'Top View', 'status': '', 'src': 'video_feed_2'},
+    {'name': 'Left View', 'status': '', 'src': 'video_feed_3'}
 ]
 
 
@@ -51,13 +51,16 @@ cameras = [
 
 # Sockets data
 # Bind flask app sockets to server video streams sockets
+# One for each camera
+# Replace ip and port
 # If just local : localhost
 socket_ips = [
     "tcp://158.39.25.126:5555",
     "tcp://158.39.25.126:5556",
     "tcp://158.39.25.126:5557"
 ]
-# topics to receive for data security
+# Topics to receive for data security
+# One topic to receive per camera stream socket
 socket_topics = [
     b"cam1",
     b"cam2",
@@ -112,7 +115,6 @@ def initCam(cam,url):
     else:
         print("cam-inactive")
         cam['status'] = 'inactive'
-
 
 #### Initialization of cams and status ####
 def initCams():
@@ -315,6 +317,8 @@ def logout():
 #### ---------- Multithreading configuration --------- ####
 ###########################################################
 
+# One thread per camera running receive and encode video
+
 thread1 = threading.Thread(target=receive_encode_video1)
 thread2 = threading.Thread(target=receive_encode_video2)
 thread3 = threading.Thread(target=receive_encode_video3)
@@ -326,7 +330,6 @@ thread3.start()
 ###########################################################
 #### -------------- App configuration ---------------- ####
 ###########################################################
-
 
 if __name__ == '__main__':
     # app.run(threaded=True)
