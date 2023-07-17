@@ -35,9 +35,9 @@ socket2 = context.socket(zmq.PUSH)
 socket3 = context.socket(zmq.PUSH)
 
 cloud_server_sockets_ips = [
-    'tcp://10.0.0.103:5555',
-    'tcp://10.0.0.103:5556',
-    'tcp://10.0.0.103:5557'
+    'tcp://20.100.204.66:5555',
+    'tcp://20.100.204.66:5556',
+    'tcp://20.100.204.66:5557'
 ]
 
 print("Binding sockets...")
