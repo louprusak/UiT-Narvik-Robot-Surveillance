@@ -31,8 +31,8 @@ socket2 = context.socket(zmq.REQ)
 socket3 = context.socket(zmq.REQ)
 
 cloud_server_sockets_ips = [
-    'tcp://20.100.204.66:5555'
-    'tcp://20.100.204.66:5556'
+    'tcp://20.100.204.66:5555',
+    'tcp://20.100.204.66:5556',
     'tcp://20.100.204.66:5557'
 ]
 
@@ -67,7 +67,9 @@ def capture_send_video(socket, cap, n):
         frame_data = encoded_frame[1].tobytes()
         topic = "cam"+str(n)
         # Send frames with topic
-        socket.send_multipart([topic.encode(), frame_data])
+        # socket.send_multipart([topic.encode(), frame_data])
+        socket.send(frame_data)
+        print("ok")
 
 # Main Program
 print("Creating threads...")

@@ -132,7 +132,8 @@ def receive_encode_video1():
     while True:
         try:
             # Receiving data from server
-            topic, data = socket1.recv_multipart(zmq.NOBLOCK)
+            # topic, data = socket1.recv_multipart(zmq.NOBLOCK)
+            data = socket1.recv(zmq.NOBLOCK)
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
             decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
@@ -163,7 +164,8 @@ def receive_encode_video2():
     while True:
         try:
             # Receiving data from server
-            topic, data = socket2.recv_multipart(zmq.NOBLOCK)
+            # topic, data = socket2.recv_multipart(zmq.NOBLOCK)
+            data = socket1.recv(zmq.NOBLOCK)
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
             decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
@@ -194,7 +196,8 @@ def receive_encode_video3():
     while True:
         try:
             # Receiving data from server
-            topic, data = socket3.recv_multipart(zmq.NOBLOCK)
+            # topic, data = socket2.recv_multipart(zmq.NOBLOCK)
+            data = socket1.recv(zmq.NOBLOCK)
             # Data to frames
             np_data = np.frombuffer(data, np.uint8)
             decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
