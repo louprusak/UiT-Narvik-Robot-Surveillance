@@ -39,9 +39,9 @@ admins = {'username': 'admin', 'password': 'admin'}
 #     'rtsp://158.39.25.126:554/stream2'
 # ]
 cameras = [
-    {'name': 'Right View', 'status': '', 'src': 'video_feed_1'},
-    {'name': 'Top View', 'status': '', 'src': 'video_feed_2'},
-    {'name': 'Left View', 'status': '', 'src': 'video_feed_3'}
+    {'name': 'Right View', 'status': 'inactive', 'src': 'video_feed_1'},
+    {'name': 'Top View', 'status': 'inactive', 'src': 'video_feed_2'},
+    {'name': 'Left View', 'status': 'inactive', 'src': 'video_feed_3'}
 ]
 
 
@@ -201,7 +201,7 @@ def receive_encode_video(socket, last_visualisation_time, cam):
         try:
             # Receiving data from server
             topic, data = socket.recv_multipart(zmq.NOBLOCK)
-            cam['status'] = 'active'
+            # cam['status'] = 'active'
             # data = socket1.recv(zmq.NOBLOCK)
             # socket1.send(b"ok")
             # Data to frames
@@ -227,7 +227,7 @@ def receive_encode_video(socket, last_visualisation_time, cam):
             )
         except zmq.error.Again:
             time.sleep(frame_time)
-            cam['status'] = 'inactive'
+            # cam['status'] = 'inactive'
 
 #
 # def receive_encode_video1():
@@ -454,4 +454,13 @@ thread3.start()
 if __name__ == '__main__':
     # app.run(threaded=True)
     print("Running...")
+    topic, message = socket1.recv_multipart()
+    if message:
+        cameras[0]['status'] = 'active'
+    topic, message = socket2.recv_multipart()
+    if message:
+        cameras[0]['status'] = 'active'
+    topic, message = socket3.recv_multipart()
+    if message:
+        cameras[0]['status'] = 'active'
     serve(app, host='0.0.0.0', port=8080, threads = 6)
