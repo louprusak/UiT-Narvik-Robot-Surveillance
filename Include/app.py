@@ -39,9 +39,9 @@ admins = {'username': 'admin', 'password': 'admin'}
 #     'rtsp://158.39.25.126:554/stream2'
 # ]
 cameras = [
-    {'name': 'Right View', 'status': '', 'src': 'video_feed_1'},
-    {'name': 'Top View', 'status': '', 'src': 'video_feed_2'},
-    {'name': 'Left View', 'status': '', 'src': 'video_feed_3'}
+    {'name': 'Right View', 'status': 'active', 'src': 'video_feed_1'},
+    {'name': 'Top View', 'status': 'active', 'src': 'video_feed_2'},
+    {'name': 'Left View', 'status': 'active', 'src': 'video_feed_3'}
 ]
 
 
