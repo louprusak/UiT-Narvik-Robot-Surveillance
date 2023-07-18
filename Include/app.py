@@ -112,37 +112,37 @@ def receive_encode_video(socket, last_visualisation_time):
 
 @app.route('/video_feed_1')
 def video_feed_1():
-    # response = make_response(receive_encode_video(socket1, last_visualization_time1))
-    # response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    # response.headers['Pragma'] = 'no-cache'
-    # response.headers['Expires'] = '0'
-    # response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
-    # return response
+    response = make_response(receive_encode_video(socket1, last_visualization_time1))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
+    return response
 
-    return Response(receive_encode_video(socket1, last_visualization_time1), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # return Response(receive_encode_video(socket1, last_visualization_time1), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/video_feed_2')
 def video_feed_2():
-    # response = make_response(receive_encode_video(socket2, last_visualization_time2))
-    # response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    # response.headers['Pragma'] = 'no-cache'
-    # response.headers['Expires'] = '0'
-    # response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
-    # return response
+    response = make_response(receive_encode_video(socket2, last_visualization_time2))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
+    return response
 
-    return Response(receive_encode_video(socket2, last_visualization_time2), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # return Response(receive_encode_video(socket2, last_visualization_time2), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_feed_3')
 def video_feed_3():
-    # response = make_response(receive_encode_video(socket3, last_visualization_time3))
-    # response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    # response.headers['Pragma'] = 'no-cache'
-    # response.headers['Expires'] = '0'
-    # response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
-    # return response
+    response = make_response(receive_encode_video(socket3, last_visualization_time3))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
+    return response
 
-    return Response(receive_encode_video(socket3, last_visualization_time3), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # return Response(receive_encode_video(socket3, last_visualization_time3), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 #####################################################################
