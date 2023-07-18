@@ -137,9 +137,18 @@ def initCam(cam, socket):
     else : cam['status'] = 'inactive'
 
 def initCams():
-    initCam(cameras[0], socket1)
-    initCam(cameras[1], socket2)
-    initCam(cameras[2], socket3)
+    socket11 = context.socket(zmq.PULL)
+    socket22 = context.socket(zmq.PULL)
+    socket33 = context.socket(zmq.PULL)
+    socket11.bind(local_socket_ips[0])
+    socket22.bind(local_socket_ips[1])
+    socket33.bind(local_socket_ips[2])
+    initCam(cameras[0], socket11)
+    initCam(cameras[1], socket22)
+    initCam(cameras[2], socket33)
+    socket11.close()
+    socket22.close()
+    socket33.close()
 
 def receive_encode_video(socket, last_visualisation_time):
     # global last_visualization_time1
@@ -331,7 +340,7 @@ def login():
 #### Home page rooting function ####
 @app.route("/home")
 def home():
-    # initCams()
+    initCams()
     if is_logged_in:
         return render_template("home.html",
                                title="Home",
@@ -395,6 +404,5 @@ thread3.start()
 
 if __name__ == '__main__':
     # app.run(threaded=True)
-    initCams()
     print("Running...")
     serve(app, host='0.0.0.0', port=8080)
