@@ -168,7 +168,7 @@ def ping(host):
 #     cam_init_socket.close()
 
 def initCams():
-    time = 30
+    rcv_time = 30
     status = 'inactive'
     global cam_init_socket
     global last_cam_init_time
@@ -177,7 +177,7 @@ def initCams():
         current_time = time.time()
         if last_cam_init_time is not None:
             elapsed_time = current_time - last_cam_init_time
-            skipped_data = int(elapsed_time / time)
+            skipped_data = int(elapsed_time / rcv_time)
             for _ in range(skipped_data):
                 try:
                     cam_init_socket.recv()
@@ -190,7 +190,7 @@ def initCams():
         for cam in cameras:
             cam['status'] = status
     except zmq.error.Again:
-        time.sleep(time)
+        time.sleep(rcv_time)
     cam_init_socket.close()
 
 def receive_encode_video(socket, last_visualisation_time):
