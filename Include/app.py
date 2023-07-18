@@ -137,6 +137,7 @@ def initCam(cam, socket):
     else : cam['status'] = 'inactive'
 
 def initCams():
+    global socket1, socket3, socket2
     socket1.close()
     socket2.close()
     socket3.close()
