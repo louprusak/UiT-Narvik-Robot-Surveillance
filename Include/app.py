@@ -119,9 +119,6 @@ def video_feed_1():
     response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
     return response
 
-    # return Response(receive_encode_video(socket1, last_visualization_time1), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
 @app.route('/video_feed_2')
 def video_feed_2():
     response = make_response(receive_encode_video(socket2, last_visualization_time2))
@@ -131,8 +128,6 @@ def video_feed_2():
     response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
     return response
 
-    # return Response(receive_encode_video(socket2, last_visualization_time2), mimetype='multipart/x-mixed-replace; boundary=frame')
-
 @app.route('/video_feed_3')
 def video_feed_3():
     response = make_response(receive_encode_video(socket3, last_visualization_time3))
@@ -141,8 +136,6 @@ def video_feed_3():
     response.headers['Expires'] = '0'
     response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
     return response
-
-    # return Response(receive_encode_video(socket3, last_visualization_time3), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 #####################################################################
