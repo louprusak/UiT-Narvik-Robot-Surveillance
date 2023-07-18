@@ -331,7 +331,7 @@ def login():
 #### Home page rooting function ####
 @app.route("/home")
 def home():
-    initCams()
+    # initCams()
     if is_logged_in:
         return render_template("home.html",
                                title="Home",
@@ -395,5 +395,6 @@ thread3.start()
 
 if __name__ == '__main__':
     # app.run(threaded=True)
+    initCams()
     print("Running...")
     serve(app, host='0.0.0.0', port=8080)
