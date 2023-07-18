@@ -49,7 +49,7 @@ cameras = [
 #### ---------- ZMQ Client server configuration ---------- ####
 ###############################################################
 
-cam_init_socket_ip = "tcp://*5555"
+cam_init_socket_ip = "tcp://*:5555"
 
 # Sockets data
 # Bind flask app sockets to server video streams sockets
