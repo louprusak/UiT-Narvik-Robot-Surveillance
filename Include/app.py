@@ -116,14 +116,14 @@ def ping(host):
     return subprocess.call(command) == 0
 
 #### Status Init Cam ####
-def initCam(cam,url):
-    hostname = urlparse(url).hostname
-    if ping(hostname):
-        print("cam-active")
-        cam['status'] = 'active'
-    else:
-        print("cam-inactive")
-        cam['status'] = 'inactive'
+# def initCam(cam,url):
+#     hostname = urlparse(url).hostname
+#     if ping(hostname):
+#         print("cam-active")
+#         cam['status'] = 'active'
+#     else:
+#         print("cam-inactive")
+#         cam['status'] = 'inactive'
 
 #### Initialization of cams and status ####
 # def initCams():
@@ -131,6 +131,15 @@ def initCam(cam,url):
 #     for i in range(len(cam_urls)):
 #         initCam(cameras[i], cam_urls[i])
 
+def initCam(cam, socket):
+    topic1, data = socket.recv_multipart(zmq.NOBLOCK)
+    if data : cam['status'] = 'active'
+    else : cam['status'] = 'inactive'
+
+def initCams():
+    initCam(cameras[0], socket1)
+    initCam(cameras[1], socket2)
+    initCam(cameras[2], socket3)
 
 def receive_encode_video1():
     global last_visualization_time1
@@ -288,7 +297,7 @@ def login():
 #### Home page rooting function ####
 @app.route("/home")
 def home():
-    # initCams()
+    initCams()
     if is_logged_in:
         return render_template("home.html",
                                title="Home",
