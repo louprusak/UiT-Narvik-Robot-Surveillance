@@ -141,8 +141,8 @@ def initCams():
     initCam(cameras[1], socket2)
     initCam(cameras[2], socket3)
 
-def receive_encode_video(socket):
-    global last_visualization_time1
+def receive_encode_video(socket, last_visualisation_time):
+    # global last_visualization_time1
     frame_time = 0.0001
     while True:
         try:
@@ -157,15 +157,15 @@ def receive_encode_video(socket):
             frame = encoded_frame[1].tobytes()
             # Update when leaving and come back
             current_time = time.time()
-            if last_visualization_time1 is not None:
-                elapsed_time = current_time - last_visualization_time1
+            if last_visualisation_time is not None:
+                elapsed_time = current_time - last_visualisation_time
                 skipped_frames = int(elapsed_time / frame_time)
                 for _ in range(skipped_frames):
                     try:
                         socket.recv_multipart(zmq.NOBLOCK)
                     except zmq.error.Again:
                         break
-            last_visualization_time1 = current_time
+            last_visualisation_time = current_time
             # Send frame to html
             yield (
                 b'--frame\r\n'
@@ -276,7 +276,7 @@ def receive_encode_video(socket):
 
 @app.route('/video_feed_1')
 def video_feed_1():
-    response = make_response(receive_encode_video(socket1))
+    response = make_response(receive_encode_video(socket1, last_visualization_time1))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -288,7 +288,7 @@ def video_feed_1():
 
 @app.route('/video_feed_2')
 def video_feed_2():
-    response = make_response(receive_encode_video(socket2))
+    response = make_response(receive_encode_video(socket2, last_visualization_time2))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -299,7 +299,7 @@ def video_feed_2():
 
 @app.route('/video_feed_3')
 def video_feed_3():
-    response = make_response(receive_encode_video(socket3))
+    response = make_response(receive_encode_video(socket3, last_visualization_time3))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -381,9 +381,9 @@ def logout():
 # thread2 = threading.Thread(target=receive_encode_video2)
 # thread3 = threading.Thread(target=receive_encode_video3)
 
-thread1 = threading.Thread(target=receive_encode_video, args=(socket1,))
-thread2 = threading.Thread(target=receive_encode_video, args=(socket2,))
-thread3 = threading.Thread(target=receive_encode_video, args=(socket3,))
+thread1 = threading.Thread(target=receive_encode_video, args=(socket1,last_visualization_time1))
+thread2 = threading.Thread(target=receive_encode_video, args=(socket2,last_visualization_time2))
+thread3 = threading.Thread(target=receive_encode_video, args=(socket3,last_visualization_time3))
 
 thread1.start()
 thread2.start()
