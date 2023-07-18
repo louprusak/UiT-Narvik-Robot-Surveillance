@@ -141,6 +141,40 @@ def initCams():
     initCam(cameras[1], socket2)
     initCam(cameras[2], socket3)
 
+def receive_encode_video(socket):
+    global last_visualization_time1
+    frame_time = 0.0001
+    while True:
+        try:
+            # Receiving data from server
+            topic, data = socket.recv_multipart(zmq.NOBLOCK)
+            # data = socket1.recv(zmq.NOBLOCK)
+            # socket1.send(b"ok")
+            # Data to frames
+            np_data = np.frombuffer(data, np.uint8)
+            decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
+            encoded_frame = cv2.imencode('.jpg', decoded_frame)
+            frame = encoded_frame[1].tobytes()
+            # Update when leaving and come back
+            current_time = time.time()
+            if last_visualization_time1 is not None:
+                elapsed_time = current_time - last_visualization_time1
+                skipped_frames = int(elapsed_time / frame_time)
+                for _ in range(skipped_frames):
+                    try:
+                        socket.recv_multipart(zmq.NOBLOCK)
+                    except zmq.error.Again:
+                        break
+            last_visualization_time1 = current_time
+            # Send frame to html
+            yield (
+                b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
+            )
+        except zmq.error.Again:
+            time.sleep(frame_time)
+
+
 def receive_encode_video1():
     global last_visualization_time1
     frame_time = 0.0001
@@ -342,10 +376,14 @@ def logout():
 ###########################################################
 
 # One thread per camera running receive and encode video
+#
+# thread1 = threading.Thread(target=receive_encode_video1)
+# thread2 = threading.Thread(target=receive_encode_video2)
+# thread3 = threading.Thread(target=receive_encode_video3)
 
-thread1 = threading.Thread(target=receive_encode_video1)
-thread2 = threading.Thread(target=receive_encode_video2)
-thread3 = threading.Thread(target=receive_encode_video3)
+thread1 = threading.Thread(target=receive_encode_video, args=(socket1,))
+thread2 = threading.Thread(target=receive_encode_video, args=(socket2,))
+thread3 = threading.Thread(target=receive_encode_video, args=(socket3,))
 
 thread1.start()
 thread2.start()
