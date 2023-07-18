@@ -90,9 +90,9 @@ print("Binding sockets...")
 # socket1.connect(local_socket_ips[0])
 # socket2.connect(local_socket_ips[1])
 # socket3.connect(local_socket_ips[2])
-socket1.bind(local_socket_ips[0])
-socket2.bind(local_socket_ips[1])
-socket3.bind(local_socket_ips[2])
+# socket1.bind(local_socket_ips[0])
+# socket2.bind(local_socket_ips[1])
+# socket3.bind(local_socket_ips[2])
 
 # Subscription to all topics
 # print("Sockets subscribing...")
@@ -137,18 +137,18 @@ def initCam(cam, socket):
     else : cam['status'] = 'inactive'
 
 def initCams():
-    socket11 = context.socket(zmq.PULL)
-    socket22 = context.socket(zmq.PULL)
-    socket33 = context.socket(zmq.PULL)
-    socket11.bind(local_socket_ips[0])
-    socket22.bind(local_socket_ips[1])
-    socket33.bind(local_socket_ips[2])
-    initCam(cameras[0], socket11)
-    initCam(cameras[1], socket22)
-    initCam(cameras[2], socket33)
-    socket11.close()
-    socket22.close()
-    socket33.close()
+    socket1.close()
+    socket2.close()
+    socket3.close()
+    socket1.bind(local_socket_ips[0])
+    socket2.bind(local_socket_ips[1])
+    socket3.bind(local_socket_ips[2])
+    initCam(cameras[0], socket1)
+    initCam(cameras[1], socket2)
+    initCam(cameras[2], socket3)
+    socket1.close()
+    socket2.close()
+    socket3.close()
 
 def receive_encode_video(socket, last_visualisation_time):
     # global last_visualization_time1
@@ -353,7 +353,9 @@ def home():
 @app.route("/cams")
 def cams():
     if is_logged_in:
-
+        socket1.bind(local_socket_ips[0])
+        socket2.bind(local_socket_ips[1])
+        socket3.bind(local_socket_ips[2])
         return render_template("cams.html",
                                title="Cams",
                                activetab='cams',
@@ -405,4 +407,4 @@ thread3.start()
 if __name__ == '__main__':
     # app.run(threaded=True)
     print("Running...")
-    serve(app, host='0.0.0.0', port=8080)
+    serve(app, host='0.0.0.0', port=8080, threads = 6)
