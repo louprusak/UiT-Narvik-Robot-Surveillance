@@ -193,13 +193,15 @@ def initCams():
         time.sleep(rcv_time)
     cam_init_socket.close()
 
-def receive_encode_video(socket, last_visualisation_time):
+def receive_encode_video(socket, last_visualisation_time, cam):
     # global last_visualization_time1
     frame_time = 0.0001
+    global cameras
     while True:
         try:
             # Receiving data from server
             topic, data = socket.recv_multipart(zmq.NOBLOCK)
+            cam['status'] = 'active'
             # data = socket1.recv(zmq.NOBLOCK)
             # socket1.send(b"ok")
             # Data to frames
@@ -225,6 +227,7 @@ def receive_encode_video(socket, last_visualisation_time):
             )
         except zmq.error.Again:
             time.sleep(frame_time)
+            cam['status'] = 'inactive'
 
 #
 # def receive_encode_video1():
@@ -328,7 +331,7 @@ def receive_encode_video(socket, last_visualisation_time):
 
 @app.route('/video_feed_1')
 def video_feed_1():
-    response = make_response(receive_encode_video(socket1, last_visualization_time1))
+    response = make_response(receive_encode_video(socket1, last_visualization_time1, cameras[0]))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -340,7 +343,7 @@ def video_feed_1():
 
 @app.route('/video_feed_2')
 def video_feed_2():
-    response = make_response(receive_encode_video(socket2, last_visualization_time2))
+    response = make_response(receive_encode_video(socket2, last_visualization_time2, cameras[1]))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -351,7 +354,7 @@ def video_feed_2():
 
 @app.route('/video_feed_3')
 def video_feed_3():
-    response = make_response(receive_encode_video(socket3, last_visualization_time3))
+    response = make_response(receive_encode_video(socket3, last_visualization_time3, cameras[2]))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -383,7 +386,7 @@ def login():
 #### Home page rooting function ####
 @app.route("/home")
 def home():
-    initCams()
+    #initCams()
     if is_logged_in:
         return render_template("home.html",
                                title="Home",
@@ -436,9 +439,9 @@ def logout():
 # thread2 = threading.Thread(target=receive_encode_video2)
 # thread3 = threading.Thread(target=receive_encode_video3)
 
-thread1 = threading.Thread(target=receive_encode_video, args=(socket1,last_visualization_time1))
-thread2 = threading.Thread(target=receive_encode_video, args=(socket2,last_visualization_time2))
-thread3 = threading.Thread(target=receive_encode_video, args=(socket3,last_visualization_time3))
+thread1 = threading.Thread(target=receive_encode_video, args=(socket1,last_visualization_time1, cameras[0]))
+thread2 = threading.Thread(target=receive_encode_video, args=(socket2,last_visualization_time2, cameras[1]))
+thread3 = threading.Thread(target=receive_encode_video, args=(socket3,last_visualization_time3, cameras[2]))
 
 thread1.start()
 thread2.start()
