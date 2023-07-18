@@ -90,9 +90,9 @@ print("Binding sockets...")
 # socket1.connect(local_socket_ips[0])
 # socket2.connect(local_socket_ips[1])
 # socket3.connect(local_socket_ips[2])
-# socket1.bind(local_socket_ips[0])
-# socket2.bind(local_socket_ips[1])
-# socket3.bind(local_socket_ips[2])
+socket1.bind(local_socket_ips[0])
+socket2.bind(local_socket_ips[1])
+socket3.bind(local_socket_ips[2])
 
 # Subscription to all topics
 # print("Sockets subscribing...")
