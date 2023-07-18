@@ -221,3 +221,9 @@ if __name__ == '__main__':
     print("Running...")
     # Waitress server deployment configuration
     serve(app, host='0.0.0.0', port=8080, threads = 6)
+
+    socket1.close()
+    socket2.close()
+    socket3.close()
+
+    context.term()
