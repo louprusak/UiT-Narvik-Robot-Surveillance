@@ -34,15 +34,15 @@ print("Creating sockets...")
 socket1 = context.socket(zmq.PUSH)
 socket2 = context.socket(zmq.PUSH)
 socket3 = context.socket(zmq.PUSH)
-cam_init_socket = context.socket(zmq.PUSH)
+# cam_init_socket = context.socket(zmq.PUSH)
 
 cloud_server_sockets_ips = [
+    'tcp://20.100.204.66:5555',
     'tcp://20.100.204.66:5556',
-    'tcp://20.100.204.66:5557',
-    'tcp://20.100.204.66:5558'
+    'tcp://20.100.204.66:5557'
 ]
 
-cam_init_socket_ip = 'tcp://20.100.204.66:5555'
+# cam_init_socket_ip = 'tcp://20.100.204.66:5555'
 
 print("Binding sockets...")
 # socket1.bind("tcp://*:5555")
@@ -51,7 +51,7 @@ print("Binding sockets...")
 socket1.connect(cloud_server_sockets_ips[0])
 socket2.connect(cloud_server_sockets_ips[1])
 socket3.connect(cloud_server_sockets_ips[2])
-cam_init_socket.connect(cam_init_socket_ip)
+# cam_init_socket.connect(cam_init_socket_ip)
 
 # Cameras configuration
 local_cam_urls = [
@@ -66,10 +66,10 @@ cap1 = cv2.VideoCapture(local_cam_urls[0])
 cap2 = cv2.VideoCapture(local_cam_urls[1])
 cap3 = cv2.VideoCapture(local_cam_urls[2])
 
-def send_server_status():
-    while True:
-        cam_init_socket.send(b"running")
-        time.sleep(30)
+# def send_server_status():
+#     while True:
+#         cam_init_socket.send(b"running")
+#         time.sleep(30)
 
 # Capture camera video and send it to client
 def capture_send_video(socket, cap, n):
@@ -90,20 +90,20 @@ def capture_send_video(socket, cap, n):
 
 # Main Program
 print("Creating threads...")
-thread_status = threading.Thread(target=send_server_status)
+# thread_status = threading.Thread(target=send_server_status)
 thread_cam_1 = threading.Thread(target=capture_send_video, args=(socket1,cap1,1))
 thread_cam_2 = threading.Thread(target=capture_send_video, args=(socket2,cap2,2))
 thread_cam_3 = threading.Thread(target=capture_send_video, args=(socket3,cap3,3))
 
 
 print("Starting threads...")
-thread_status.start()
+# thread_status.start()
 thread_cam_1.start()
 thread_cam_2.start()
 thread_cam_3.start()
 
 print("\nRunning...")
-thread_status.join()
+# thread_status.join()
 thread_cam_1.join()
 thread_cam_2.join()
 thread_cam_3.join()
@@ -116,6 +116,6 @@ socket1.close()
 socket2.close()
 socket3.close()
 
-cam_init_socket.close()
+# cam_init_socket.close()
 
 context.term()

@@ -49,7 +49,7 @@ cameras = [
 #### ---------- ZMQ Client server configuration ---------- ####
 ###############################################################
 
-cam_init_socket_ip = "tcp://*:5555"
+# cam_init_socket_ip = "tcp://*:5555"
 
 # Sockets data
 # Bind flask app sockets to server video streams sockets
@@ -57,9 +57,9 @@ cam_init_socket_ip = "tcp://*:5555"
 # Replace ip and port
 # If just local : localhost
 local_socket_ips = [
+    "tcp://*:5555",
     "tcp://*:5556",
-    "tcp://*:5557",
-    "tcp://*:5558"
+    "tcp://*:5557"
 ]
 # Topics to receive for data security
 # One topic to receive per camera stream socket
@@ -83,7 +83,7 @@ print("Creating sockets...")
 socket1 = context.socket(zmq.PULL)
 socket2 = context.socket(zmq.PULL)
 socket3 = context.socket(zmq.PULL)
-cam_init_socket = context.socket(zmq.PULL)
+# cam_init_socket = context.socket(zmq.PULL)
 socket1.setsockopt(zmq.RCVTIMEO,0)
 socket2.setsockopt(zmq.RCVTIMEO,0)
 socket3.setsockopt(zmq.RCVTIMEO,0)
@@ -115,10 +115,10 @@ last_visualization_time2 = None
 last_visualization_time3 = None
 
 #### Ping Util Fonction ####
-def ping(host):
-    param = '-n' if platform.system().lower()=='windows' else '-c'
-    command = ['ping', param, '1', host]
-    return subprocess.call(command) == 0
+# def ping(host):
+#     param = '-n' if platform.system().lower()=='windows' else '-c'
+#     command = ['ping', param, '1', host]
+#     return subprocess.call(command) == 0
 
 #### Status Init Cam ####
 # def initCam(cam,url):
@@ -167,31 +167,31 @@ def ping(host):
 #         cam['status'] = status
 #     cam_init_socket.close()
 
-def initCams():
-    rcv_time = 30
-    status = 'inactive'
-    global cam_init_socket
-    global last_cam_init_time
-    cam_init_socket.bind(cam_init_socket_ip)
-    try:
-        current_time = time.time()
-        if last_cam_init_time is not None:
-            elapsed_time = current_time - last_cam_init_time
-            skipped_data = int(elapsed_time / rcv_time)
-            for _ in range(skipped_data):
-                try:
-                    cam_init_socket.recv()
-                except zmq.error.Again:
-                    break
-        last_cam_init_time = current_time
-        message = cam_init_socket.recv()
-        if message == b"running" :
-            status = 'active'
-        for cam in cameras:
-            cam['status'] = status
-    except zmq.error.Again:
-        time.sleep(rcv_time)
-    cam_init_socket.close()
+# def initCams():
+#     rcv_time = 30
+#     status = 'inactive'
+#     global cam_init_socket
+#     global last_cam_init_time
+#     cam_init_socket.bind(cam_init_socket_ip)
+#     try:
+#         current_time = time.time()
+#         if last_cam_init_time is not None:
+#             elapsed_time = current_time - last_cam_init_time
+#             skipped_data = int(elapsed_time / rcv_time)
+#             for _ in range(skipped_data):
+#                 try:
+#                     cam_init_socket.recv()
+#                 except zmq.error.Again:
+#                     break
+#         last_cam_init_time = current_time
+#         message = cam_init_socket.recv()
+#         if message == b"running" :
+#             status = 'active'
+#         for cam in cameras:
+#             cam['status'] = status
+#     except zmq.error.Again:
+#         time.sleep(rcv_time)
+#     cam_init_socket.close()
 
 def receive_encode_video(socket, last_visualisation_time, cam):
     # global last_visualization_time1
