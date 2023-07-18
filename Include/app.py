@@ -341,7 +341,7 @@ def login():
 #### Home page rooting function ####
 @app.route("/home")
 def home():
-    initCams()
+    # initCams()
     if is_logged_in:
         return render_template("home.html",
                                title="Home",
@@ -354,10 +354,10 @@ def home():
 @app.route("/cams")
 def cams():
     if is_logged_in:
-        global socket1, socket2, socket3
-        socket1.bind(local_socket_ips[0])
-        socket2.bind(local_socket_ips[1])
-        socket3.bind(local_socket_ips[2])
+        # global socket1, socket2, socket3
+        # socket1.bind(local_socket_ips[0])
+        # socket2.bind(local_socket_ips[1])
+        # socket3.bind(local_socket_ips[2])
         return render_template("cams.html",
                                title="Cams",
                                activetab='cams',
