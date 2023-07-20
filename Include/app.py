@@ -5,7 +5,27 @@
 ####----------------------------------------------------####
 ############################################################
 
-from flask import Flask, render_template, flash, redirect, url_for, make_response, Response
+# If you want to add a camera to the website :
+#       First add the camera to the sending server by following the instructions
+#       Add the camera into "cameras" array with:
+#           - Name of the camera you want to appear on the pages
+#           - Status of the camera: "active" or "inactive"
+#           - Name of the associated video_feed function.
+#                   For example for the 4th camera : {'name':'XXX view', 'status':'inactive','src':'video_feed_4'}
+#       Add a new local port for receiving new cam data from the server into "local_sockets_ip" array.
+#       Add a new PULL socket and bind it to the right local listening port
+#       Add a new "last_visualization_time" variable for new thread to create
+#       Create a new "video_feed" function similar to the others
+#       and in "make_response" add into the "receive_encode_video" function :
+#           - The socket you created
+#           - The last visualization time variable you created
+#       Create a new thread running "receive_encode_video" function with:
+#           - The socket you created
+#           - The last visualization time variable you created
+#       Start the created thread
+
+
+from flask import Flask, render_template, flash, redirect, url_for, make_response
 from forms import LoginForm
 import cv2
 import numpy as np
@@ -24,12 +44,15 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '92f3fc2bc60b51fa5bd949b418a6ddad'
 
 # User login data
+# If you want to add admins add a user to admins array and modify the login function
 is_logged_in = False
 username = 'admin'
 password = 'admin'
-admins = {'username': 'admin', 'password': 'admin'}
+admins = [{'username': 'admin', 'password': 'admin'}]
 
 # Cameras data
+# If you want to add a new camera add a cam into cameras array and bind the src to a video_feed function
+# Also check the other requirements on the README.md file
 cameras = [
     {'name': 'Right View', 'status': 'active', 'src': 'video_feed_1'},
     {'name': 'Top View', 'status': 'active', 'src': 'video_feed_2'},
@@ -42,10 +65,8 @@ cameras = [
 ###############################################################
 
 # Sockets data
-# Bind flask app sockets to server video streams sockets
+# Bind flask app sockets to local network ports
 # One for each camera
-# Replace ip and port
-# If just local : localhost
 local_socket_ips = [
     "tcp://*:5555",
     "tcp://*:5556",
@@ -64,7 +85,7 @@ socket1.setsockopt(zmq.RCVTIMEO,0)
 socket2.setsockopt(zmq.RCVTIMEO,0)
 socket3.setsockopt(zmq.RCVTIMEO,0)
 
-# Connect sockets to server
+# Bind sockets to local ips
 print("Binding sockets...")
 socket1.bind(local_socket_ips[0])
 socket2.bind(local_socket_ips[1])
@@ -75,22 +96,27 @@ socket3.bind(local_socket_ips[2])
 #### ---------- ZMQ / Flask Video Functions ---------- ####
 ###########################################################
 
+# Last visualization time variables for recovering lost images in direct streams
+# One per camera because of threads concurrency
 last_visualization_time1 = None
 last_visualization_time2 = None
 last_visualization_time3 = None
 
+#### Receive, decode and send video frames to the web page ####
+# Threaded function
+# Called one time per camera with binding socket and last visualization data
 def receive_encode_video(socket, last_visualisation_time):
     frame_time = 0.0001
     while True:
         try:
-            # Receiving data from server
+            # Receiving bytes from server
             topic, data = socket.recv_multipart(zmq.NOBLOCK)
-            # Data to frames
+            # Bytes to frames
             np_data = np.frombuffer(data, np.uint8)
             decoded_frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
             encoded_frame = cv2.imencode('.jpg', decoded_frame)
             frame = encoded_frame[1].tobytes()
-            # Update when leaving and come back
+            # Skipping old frames and update to direct
             current_time = time.time()
             if last_visualisation_time is not None:
                 elapsed_time = current_time - last_visualisation_time
@@ -109,7 +135,7 @@ def receive_encode_video(socket, last_visualisation_time):
         except zmq.error.Again:
             time.sleep(frame_time)
 
-
+#### Generate the camera 1 stream for th html page ####
 @app.route('/video_feed_1')
 def video_feed_1():
     response = make_response(receive_encode_video(socket1, last_visualization_time1))
@@ -119,6 +145,7 @@ def video_feed_1():
     response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
     return response
 
+#### Generate the camera 2 stream for th html page ####
 @app.route('/video_feed_2')
 def video_feed_2():
     response = make_response(receive_encode_video(socket2, last_visualization_time2))
@@ -128,6 +155,7 @@ def video_feed_2():
     response.mimetype = 'multipart/x-mixed-replace; boundary=frame'
     return response
 
+#### Generate the camera 3 steream for th html page ####
 @app.route('/video_feed_3')
 def video_feed_3():
     response = make_response(receive_encode_video(socket3, last_visualization_time3))
@@ -149,6 +177,7 @@ def login():
     global is_logged_in
     form = LoginForm()
     if form.validate_on_submit():
+        # Need to modify this if you want to add other admins
         if form.username.data == username and form.password.data == password:
             is_logged_in = True
             return redirect(url_for('home'))
@@ -160,7 +189,6 @@ def login():
 #### Home page rooting function ####
 @app.route("/home")
 def home():
-    #initCams()
     if is_logged_in:
         return render_template("home.html",
                                title="Home",
@@ -208,13 +236,14 @@ thread1 = threading.Thread(target=receive_encode_video, args=(socket1,last_visua
 thread2 = threading.Thread(target=receive_encode_video, args=(socket2,last_visualization_time2))
 thread3 = threading.Thread(target=receive_encode_video, args=(socket3,last_visualization_time3))
 
+# Starting camera threads
 thread1.start()
 thread2.start()
 thread3.start()
 
-###########################################################
-#### -------------- App configuration ---------------- ####
-###########################################################
+####################################################################
+#### -------------- App Lunching configuration ---------------- ####
+####################################################################
 
 if __name__ == '__main__':
     # app.run(threaded=True)
